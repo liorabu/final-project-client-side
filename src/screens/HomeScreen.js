@@ -1,11 +1,14 @@
 import React from 'react';
 import { Text, StyleSheet, View, Button, TouchableOpacity } from 'react-native';
+import Option from '../components/Option';
 
 
 export default HomeScreen = () => {
   return (
     <View style={styles.container}>
-      <Text>gf</Text>
+      <Option text= 'מערכות שהוזנו' />
+      <Option text= 'הוסף מערכת' />
+      <Option text= 'צור קשר' />
     </View>
   )
 }
@@ -13,7 +16,8 @@ export default HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginVertical: '20%',
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
+    marginVertical: '20%'
   },
+ 
 });
