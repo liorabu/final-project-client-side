@@ -2,7 +2,6 @@ import React from 'react';
 import { Text, StyleSheet, View, Button, TouchableOpacity } from 'react-native';
 import Option from '../components/Option';
 
-
 export default HomeScreen = () => {
   return (
     <View style={styles.container}>

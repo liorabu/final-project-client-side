@@ -5,7 +5,7 @@ export default Answer = (props) => {
 
     return (
         <TouchableOpacity style={styles.optionContainer} >
-            <Text style={styles.optionText}>{props.text}</Text>
+            <Text style={styles.optionText} >{props.text}</Text>
         </TouchableOpacity>
     );
 };
