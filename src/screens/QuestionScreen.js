@@ -4,12 +4,13 @@ import Answer from '../components/Answer'
 import MainButton from '../components/MainButton';
 
 export default QuestionScreen = (props) => {
+    const {route}=props;
   return (
     <View style={styles.container}>
         <View style={styles.questionContainer}>
             <View style={styles.questionNumberContainer}>
                 <Text style={styles.questionNumberText}>
-                    {`שאלה ${props.questionNumber} מתוך ${props.totalQuestions}`}
+                    {`שאלה ${route.params.questionNumber} מתוך ${route.params.totalQuestions}`}
                 </Text>
             </View>
             <Text style={styles.questionText}>מספר העובדים החשופים למערכות

@@ -1,10 +1,10 @@
 import React from 'react';
 import { Text, TouchableOpacity, StyleSheet } from 'react-native';
 
-export default Answer = (props) => {
+export default Option = (props) => {
 
     return (
-        <TouchableOpacity style={styles.optionContainer} >
+        <TouchableOpacity style={styles.optionContainer} onPress={props.onPress}>
             <Text style={styles.optionText} >{props.text}</Text>
         </TouchableOpacity>
     );
