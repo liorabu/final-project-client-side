@@ -3,15 +3,15 @@ import { Text, StyleSheet, View, Button, TouchableOpacity, FlatList } from 'reac
 
 export default SystemScreen = () => {
     const Systems = [
-        { ke: 1, name: 'מערכת 1', status: 'חישוב רמת סיכון', LevelOfRisk: 'בתהליך', MaxRisk: 'סיכון 1' },
-        { id: 2, name: 'מערכת 2', status: 'ביצוע בקרות', LevelOfRisk: 3, MaxRisk: 'סיכון 2' },
-        { id: 3, name: 'מערכת 3', status: 'חישוב רמת סיכון', LevelOfRisk: 'בתהליך', MaxRisk: 'סיכון 4' },
-        { id: 4, name: 'מערכת 4', status: 'סיום', LevelOfRisk: 1, MaxRisk: 'סיכון 1' },
-        { id: 5, name: 'מערכת 5', status: 'סיום', LevelOfRisk: 1, MaxRisk: 'סיכון 1' },
-        { id: 6, name: 'מערכת 6', status: 'סיום', LevelOfRisk: 1, MaxRisk: 'סיכון 1' },
-        { id: 7, name: 'מערכת 7', status: 'חישוב רמת סיכון', LevelOfRisk: 'בתהליך', MaxRisk: 'סיכון 4' },
-        { id: 8, name: 'מערכת 8', status: 'סיום', LevelOfRisk: 1, MaxRisk: 'סיכון 1' },
-        { id: 9, name: 'מערכת 9', status: 'סיום', LevelOfRisk: 1, MaxRisk: 'סיכון 1' },
+        { id: '1', name: 'מערכת 1', status: 'חישוב רמת סיכון', LevelOfRisk: 'בתהליך', MaxRisk: 'סיכון 1' },
+        { id: '2', name: 'מערכת 2', status: 'ביצוע בקרות', LevelOfRisk: 3, MaxRisk: 'סיכון 2' },
+        { id: '3', name: 'מערכת 3', status: 'חישוב רמת סיכון', LevelOfRisk: 'בתהליך', MaxRisk: 'סיכון 4' },
+        { id: '4', name: 'מערכת 4', status: 'סיום', LevelOfRisk: 1, MaxRisk: 'סיכון 1' },
+        { id: '5', name: 'מערכת 5', status: 'סיום', LevelOfRisk: 1, MaxRisk: 'סיכון 1' },
+        { id: '6', name: 'מערכת 6', status: 'סיום', LevelOfRisk: 1, MaxRisk: 'סיכון 1' },
+        { id: '7', name: 'מערכת 7', status: 'חישוב רמת סיכון', LevelOfRisk: 'בתהליך', MaxRisk: 'סיכון 4' },
+        { id: '8', name: 'מערכת 8', status: 'סיום', LevelOfRisk: 1, MaxRisk: 'סיכון 1' },
+        { id: '9', name: 'מערכת 9', status: 'סיום', LevelOfRisk: 1, MaxRisk: 'סיכון 1' },
     ];
     return (
         <FlatList style={styles.container}
