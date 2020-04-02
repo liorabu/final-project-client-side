@@ -1,7 +1,15 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
+import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 import Answer from '../components/Answer'
 import MainButton from '../components/MainButton';
+
+var radio_props = [
+    {label: 'param1', value: 0 },
+    {label: 'param2', value: 1 }
+  ];
+   
+
 
 export default QuestionScreen = (props) => {
     const {route}=props;
@@ -16,6 +24,12 @@ export default QuestionScreen = (props) => {
             <Text style={styles.questionText}>מספר העובדים החשופים למערכות
 אדם - מכונה (HMI) הקשורים לחומ"ס</Text>
         </View>
+
+        <RadioForm
+            radio_props={radio_props}
+            initial={1}
+            //onPress={(value) => {this.setState({value:value})}}
+          />
 
         <View>
             <Answer text="עד 5" onPress={() => { console.warn('1'); }} />
@@ -55,7 +69,8 @@ const styles = StyleSheet.create({
     },
 
     questionNumberText: {
-        backgroundColor: 'white',
+        backgroundColor: '#f4f2f4',
+        paddingHorizontal:'1%',
         alignSelf: 'center',
         fontSize:20,
         fontWeight:'bold',

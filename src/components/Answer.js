@@ -13,7 +13,7 @@ export default Answer = (props) => {
 const styles = StyleSheet.create({
     answerContainer: {
         borderTopColor: '#666666',
-        borderTopWidth: 1,
+       borderTopWidth: 1,
         borderBottomColor: '#666666',
         borderBottomWidth: 1,
         paddingVertical: 10,
