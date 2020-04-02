@@ -17,7 +17,7 @@ export default SystemScreen = () => {
         <FlatList style={styles.container}
         // numColumns={3}
             showsHorizontalScrollIndicator={true}
-            keyExtractor={(System) => System.id}
+            // keyExtractor={(System) => System.id}
             data={Systems}
             renderItem={({ item }) => {
                 return (
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingHorizontal: '1%',
-        marginTop: '10%',
+      
   
     },
     systemContainer: {

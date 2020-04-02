@@ -1,49 +1,50 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
-import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
+import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from 'react-native-simple-radio-button';
 import Answer from '../components/Answer'
 import MainButton from '../components/MainButton';
 
-var radio_props = [
-    {label: 'param1', value: 0 },
-    {label: 'param2', value: 1 }
-  ];
-   
+
+// var radio_props = [
+//     {label: 'param1', value: 0 },
+//     {label: 'param2', value: 1 }
+//   ];
+
 
 
 export default QuestionScreen = (props) => {
-    const {route}=props;
-  return (
-    <View style={styles.container}>
-        <View style={styles.questionContainer}>
-            <View style={styles.questionNumberContainer}>
-                <Text style={styles.questionNumberText}>
-                    {`שאלה ${route.params.questionNumber} מתוך ${route.params.totalQuestions}`}
-                </Text>
+    const { route } = props;
+    const [answer, setAnswer] = useState('answer1');
+    return (
+        <View style={styles.container}>
+            <View style={styles.questionContainer}>
+                <View style={styles.questionNumberContainer}>
+                    <Text style={styles.questionNumberText}>
+                        {`שאלה ${route.params.question.questionNumber} מתוך ${route.params.totalQuestions}`}
+                    </Text>
+                </View>
+                <Text style={styles.questionText}>{route.params.question.title}</Text>
             </View>
-            <Text style={styles.questionText}>מספר העובדים החשופים למערכות
-אדם - מכונה (HMI) הקשורים לחומ"ס</Text>
-        </View>
 
-        <RadioForm
+            {/* <RadioForm
             radio_props={radio_props}
             initial={1}
             //onPress={(value) => {this.setState({value:value})}}
-          />
+          /> */}
 
-        <View>
-            <Answer text="עד 5" onPress={() => { console.warn('1'); }} />
-            <Answer text="5-10" onPress={() => { console.warn('2'); }} />
-            <Answer text="10-50" onPress={() => { console.warn('3'); }} />
-            <Answer text="מעל 50" onPress={() => { console.warn('4'); }} />
+            <View>
+                <Answer text={route.params.question.answer1} onPress={() => { console.warn('1'), setAnswer('answer1'); }} />
+                <Answer text={route.params.question.answer2} onPress={() => { console.warn('2'), setAnswer('answer2'); }} />
+                <Answer text={route.params.question.answer3} onPress={() => { console.warn('3'), setAnswer('answer3'); }} />
+                <Answer text={route.params.question.answer4} onPress={() => { console.warn('4'), setAnswer('answer4'); }} />
+            </View>
+
+            <MainButton
+                title="לשאלה הבאה"
+                onPress={() => { console.warn('next!'); }}
+                width="65%" margin="20%" />
         </View>
-
-        <MainButton
-            title="לשאלה הבאה"
-            onPress={() => { console.warn('next!'); }}
-            width="65%" margin="20%" />
-    </View>
-  );
+    );
 }
 
 const styles = StyleSheet.create({
@@ -63,22 +64,25 @@ const styles = StyleSheet.create({
 
     questionNumberContainer: {
         position: 'absolute',
-        top:-18,
+        top: -18,
         left: 0,
         right: 0,
     },
 
     questionNumberText: {
         backgroundColor: '#f4f2f4',
-        paddingHorizontal:'1%',
+        paddingHorizontal: '1%',
         alignSelf: 'center',
-        fontSize:20,
-        fontWeight:'bold',
+        fontSize: 20,
+        fontWeight: 'bold',
     },
 
     questionText: {
         textAlign: 'center',
-        fontSize:20,
-        fontWeight:'bold'
+        fontSize: 20,
+        fontWeight: 'bold'
     },
+    answer:{
+        backgroundColor:'#ffffff'
+    }
 });
