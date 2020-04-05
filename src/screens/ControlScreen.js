@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, StyleSheet, View, Button, TouchableOpacity } from 'react-native';
 import { CheckBox,Icon, Image ,Overlay  } from 'react-native-elements'
 
-export default HomeScreen = () => {
+export default ControlScreen = () => {
     return (
         <View style={styles.container}>
             <View style={styles.questionContainer}>

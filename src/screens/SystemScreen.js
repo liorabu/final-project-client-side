@@ -1,75 +1,28 @@
 import React from 'react';
 import { Text, StyleSheet, View, Button, TouchableOpacity, FlatList } from 'react-native';
 
-export default SystemScreen = () => {
-    const Systems = [
-        { id: '1', name: 'מערכת 1', status: 'חישוב רמת סיכון', LevelOfRisk: 'בתהליך', MaxRisk: 'סיכון 1' },
-        { id: '2', name: 'מערכת 2', status: 'ביצוע בקרות', LevelOfRisk: 3, MaxRisk: 'סיכון 2' },
-        { id: '3', name: 'מערכת 3', status: 'חישוב רמת סיכון', LevelOfRisk: 'בתהליך', MaxRisk: 'סיכון 4' },
-        { id: '4', name: 'מערכת 4', status: 'סיום', LevelOfRisk: 1, MaxRisk: 'סיכון 1' },
-        { id: '5', name: 'מערכת 5', status: 'סיום', LevelOfRisk: 1, MaxRisk: 'סיכון 1' },
-        { id: '6', name: 'מערכת 6', status: 'סיום', LevelOfRisk: 1, MaxRisk: 'סיכון 1' },
-        { id: '7', name: 'מערכת 7', status: 'חישוב רמת סיכון', LevelOfRisk: 'בתהליך', MaxRisk: 'סיכון 4' },
-        { id: '8', name: 'מערכת 8', status: 'סיום', LevelOfRisk: 1, MaxRisk: 'סיכון 1' },
-        { id: '9', name: 'מערכת 9', status: 'סיום', LevelOfRisk: 1, MaxRisk: 'סיכון 1' },
-    ];
-    return (
-        <FlatList style={styles.container}
-        // numColumns={3}
-            showsHorizontalScrollIndicator={true}
-            // keyExtractor={(System) => System.id}
-            data={Systems}
-            renderItem={({ item }) => {
-                return (
-                   
-                    <TouchableOpacity style={styles.systemContainer}>
-                        <Text style={styles.systemName} >
-                            שם המערכת: {item.name}
-                        </Text>
-                        <View style={[styles.systemDetails, styles.secondRaw]}>
-                            <Text >סטטוס: {item.status}</Text>
+export default SystemScreen = (props) => {
+    const question =
+        { questionNumber: 1, title: 'מספר העובדים החשופים למכונות אדם- מכונה (HMI) הקשורים לחומ"ס', answer1: 'עד 5', answer2: '5-10', answer3: '10-50', answer4: 'מעל 40' }
 
-                            <Text >רמת הסיכון: {item.LevelOfRisk}</Text>
-                        </View>
-        
-                    </TouchableOpacity>
-                );
-            }}
-        />
+        const { route } = props;
+        const system=route.params.item;
+
+    return (
+        <View style={styles.container}>
+            <Option text='תיאור המערכת'/>
+            <Option text='חישוב רמת חשיפה' onPress={()=>{props.navigation.navigate('Question',{question,totalQuestions:80})}}/>
+            <Option text='חישוב רמת סיכון' />
+            <Option text='בקרות' onPress={() => { props.navigation.navigate('Control') }} />
+        </View>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingHorizontal: '1%',
-      
-  
-    },
-    systemContainer: {
-        borderColor: '#169BD5',
-        borderWidth: 3,
-        width: '90%',
-        alignSelf: 'center',
-        borderRadius: 10,
-        paddingVertical: '2%',
-        paddingHorizontal: '3%',
-        marginVertical: '1%',
-        marginHorizontal:'1%'
-       
-    },
-    systemName: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        marginTop: 0
-    },
-    systemDetails: {
-        fontSize: 14,
-        marginVertical: 3
-    },
-    secondRaw: {
-        flexDirection: 'row',
-        justifyContent: 'space-between'
-    }
-});
+        paddingHorizontal: 20,
 
+    },
+
+});
