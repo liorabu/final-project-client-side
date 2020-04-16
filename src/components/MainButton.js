@@ -29,8 +29,7 @@ export default MainButton = (props) => {
 const styles = StyleSheet.create({
     buttonContainer: {
         backgroundColor: '#169BD5',
-        height: '5%',
-        // width: '100%',
+        height: '8%',
         paddingVertical: '3%',
         borderRadius: 3,
         alignSelf: 'center',
@@ -39,6 +38,7 @@ const styles = StyleSheet.create({
     buttonText: {
         color: 'white',
         textAlign: 'center',
-        top:-4
+        top:4,
+        fontSize:17
     }
 });

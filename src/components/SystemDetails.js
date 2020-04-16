@@ -1,9 +1,9 @@
 import React from 'react';
 import { Text, StyleSheet, View, Button, TouchableOpacity } from 'react-native';
 
-export default SystemDetailScreen = (props) => {
-    const { route } = props;
-    const system = route.params.system;
+export default SystemDetail = ({system}) => {
+    // const { route } = props;
+    // const system = route.params.system;
     return (
         <View style={styles.container}>
             <View style={styles.titleContainer}>
@@ -35,8 +35,8 @@ export default SystemDetailScreen = (props) => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        paddingHorizontal: '4%',
+        // flex: 1,
+        paddingBottom: '4%',
     },
     titleContainer: {
         alignItems: 'center',

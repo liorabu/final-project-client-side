@@ -9,6 +9,7 @@ import SystemsScreen from './src/screens/SystemsScreen';
 import ControlScreen from './src/screens/ControlScreen';
 import SystemScreen from './src/screens/SystemScreen';
 import SystemDetailsScreen from './src/screens/SystemDetailsScreen';
+import NewSystemScreen from './src/screens/NewSystemScreen';
 
 const Stack = createStackNavigator();
 
@@ -23,6 +24,7 @@ export default function App() {
           <Stack.Screen name="Control" component={ControlScreen} />
           <Stack.Screen name="System" component={SystemScreen} options={{ title: 'אפשרויות' ,headerTitleAlign:'center',headerTintColor: '#fff',headerStyle:{backgroundColor:'#027DB4'}}}/>
           <Stack.Screen name="SystemDetails" component={SystemDetailsScreen} />
+          <Stack.Screen name="NewSystem" component={NewSystemScreen}  options={{ title: 'הוספת מערכת' ,headerTitleAlign:'center',headerTintColor: '#fff',headerStyle:{backgroundColor:'#027DB4'}}} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>

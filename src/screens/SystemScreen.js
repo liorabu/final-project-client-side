@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, StyleSheet, View, Button, TouchableOpacity, FlatList } from 'react-native';
 import Option from '../components/Option';
+import SystemDetails from '../components/SystemDetails';
 
 
 export default SystemScreen = (props) => {
@@ -13,6 +14,7 @@ export default SystemScreen = (props) => {
 
     return (
         <View style={styles.container}>
+            <SystemDetails system={system} />
             <Option text='תיאור המערכת' onPress={()=>{props.navigation.navigate('SystemDetails',{system})}}/>
             <Option text='חישוב רמת חשיפה' onPress={()=>{props.navigation.navigate('Question',{question,totalQuestions:80})}}/>
             <Option text='חישוב רמת סיכון' />

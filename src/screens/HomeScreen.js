@@ -9,7 +9,7 @@ export default HomeScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
       <Option text= 'מערכות שהוזנו' onPress={()=>{navigation.navigate('Systems')}}/>
-      <Option text= 'הוסף מערכת' />
+      <Option text= 'הוסף מערכת' onPress={()=>{navigation.navigate('NewSystem')}} />
       <Option text= 'צור קשר' />
    
     </View>
