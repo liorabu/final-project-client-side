@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
 import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from 'react-native-simple-radio-button';
+import Answer from '../components/Answer';
+import MainButton from '../components/MainButton';
 
 // var radio_props = [
 //     {label: 'param1', value: 0 },

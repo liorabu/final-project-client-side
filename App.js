@@ -8,6 +8,7 @@ import HomeScreen from './src/screens/HomeScreen';
 import SystemsScreen from './src/screens/SystemsScreen';
 import ControlScreen from './src/screens/ControlScreen';
 import SystemScreen from './src/screens/SystemScreen';
+import SystemDetailsScreen from './src/screens/SystemDetailsScreen';
 
 const Stack = createStackNavigator();
 
@@ -16,11 +17,12 @@ export default function App() {
     <SafeAreaView style={{ flex: 1 }}>
       <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'חומר אפל' ,headerTitleAlign:'center' ,headerTintColor: '#fff',headerStyle:{backgroundColor:'#027DB4'}}} />
           <Stack.Screen name="Question" component={QuestionScreen} />
-          <Stack.Screen name="Systems" component={SystemsScreen} />
+          <Stack.Screen name="Systems" component={SystemsScreen} options={{ title: 'מערכות קיימות' ,headerTitleAlign:'center',headerTintColor: '#fff',headerStyle:{backgroundColor:'#027DB4'}}}/>
           <Stack.Screen name="Control" component={ControlScreen} />
-          <Stack.Screen name="System" component={SystemScreen} />
+          <Stack.Screen name="System" component={SystemScreen} options={{ title: 'אפשרויות' ,headerTitleAlign:'center',headerTintColor: '#fff',headerStyle:{backgroundColor:'#027DB4'}}}/>
+          <Stack.Screen name="SystemDetails" component={SystemDetailsScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>

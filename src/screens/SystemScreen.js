@@ -1,5 +1,7 @@
 import React from 'react';
 import { Text, StyleSheet, View, Button, TouchableOpacity, FlatList } from 'react-native';
+import Option from '../components/Option';
+
 
 export default SystemScreen = (props) => {
     const question =
@@ -7,10 +9,11 @@ export default SystemScreen = (props) => {
 
         const { route } = props;
         const system=route.params.item;
+        const title=route.params.item.name;
 
     return (
         <View style={styles.container}>
-            <Option text='תיאור המערכת'/>
+            <Option text='תיאור המערכת' onPress={()=>{props.navigation.navigate('SystemDetails',{system})}}/>
             <Option text='חישוב רמת חשיפה' onPress={()=>{props.navigation.navigate('Question',{question,totalQuestions:80})}}/>
             <Option text='חישוב רמת סיכון' />
             <Option text='בקרות' onPress={() => { props.navigation.navigate('Control') }} />
