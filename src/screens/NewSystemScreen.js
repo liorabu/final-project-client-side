@@ -1,7 +1,6 @@
 import React from 'react';
-import { Text, StyleSheet, View, Button, TouchableOpacity, FlatList } from 'react-native';
+import { Text, StyleSheet, View, Button, TouchableOpacity, FlatList, TextInput } from 'react-native';
 import MainButton from '../components/MainButton';
-import { TextInput } from 'react-native-gesture-handler';
 import { Dropdown } from 'react-native-material-dropdown';
 
 const maxRisk = [
@@ -45,6 +44,9 @@ export default NewSystemScreen = ({navigation}) => {
                 style={styles.dropDown}
                 label="סיכון מקסימלי"
                 data={maxRisk}
+                lineWidth={0}
+                activeLineWidth={0}
+                disabledLineWidth={0}
             />
             <MainButton
     title="הוספה לרשימת המערכות"
