@@ -23,7 +23,7 @@ const maxRisk = [
 
 ]
 
-export default NewSystemScreen = ({navigation}) => {
+export default NewSystemScreen = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <Text style={styles.textStyle}>שם המערכת</Text>
@@ -40,28 +40,30 @@ export default NewSystemScreen = ({navigation}) => {
                 numberOfLines={10}
                 multiline={true}
             />
-            <Dropdown
+            {/* <Dropdown
                 style={styles.dropDown}
                 label="סיכון מקסימלי"
                 data={maxRisk}
                 lineWidth={0}
                 activeLineWidth={0}
                 disabledLineWidth={0}
-            />
+            /> */}
+
+
             <MainButton
-    title="הוספה לרשימת המערכות"
-    onPress={()=>{navigation.navigate('Systems')}}
-    width="65%" margin="20%" />
+                title="הוספה לרשימת המערכות"
+                onPress={() => { navigation.navigate('Systems') }}
+                width="65%" margin="20%" />
 
         </View>
     );
-    
-    }
+
+}
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingHorizontal: 20,
-        paddingTop:'2%'
+        paddingTop: '2%'
 
     },
     textStyle: {
@@ -76,7 +78,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: '2%',
         paddingVertical: '2%',
         fontSize: 15,
-        marginBottom:'2%'
+        marginBottom: '2%'
     },
     textArea: {
         borderColor: '#169BD5',
