@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
       alignSelf: 'center',
       borderRadius: 10,
       paddingVertical: 13,
-       marginVertical: '1%'
+       marginVertical: '1%',  
     },
     optionText: {
       textAlign: 'center',

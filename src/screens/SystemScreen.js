@@ -15,10 +15,10 @@ export default SystemScreen = (props) => {
     return (
         <View style={styles.container}>
             <SystemDetails system={system} />
-            <Option text='תיאור המערכת' onPress={()=>{props.navigation.navigate('SystemDetails',{system})}}/>
-            <Option text='חישוב רמת חשיפה' onPress={()=>{props.navigation.navigate('Question',{question,totalQuestions:80})}}/>
-            <Option text='חישוב רמת סיכון' />
-            <Option text='בקרות' onPress={() => { props.navigation.navigate('Control') }} />
+            {/* <Option text='תיאור המערכת' onPress={()=>{props.navigation.navigate('SystemDetails',{system})}}/> */}
+            <Option  text='חישוב רמת חשיפה' onPress={()=>{props.navigation.navigate('Question',{question,totalQuestions:80})}}/>
+            <Option  text='חישוב רמת סיכון' />
+            <Option  text='בקרות' onPress={() => { props.navigation.navigate('Control') }} />    
         </View>
     )
 }
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingHorizontal: 20,
-
     },
+   
 
 });
