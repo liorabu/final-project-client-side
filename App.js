@@ -14,26 +14,26 @@ import LoginScreen from './src/screens/LoginScreen';
 
 const Stack = createStackNavigator();
 
+
 export default function App() {
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <NavigationContainer>
         <Stack.Navigator>
-        <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'חומר אפל' ,headerTitleAlign:'center' ,headerTintColor: '#fff',headerStyle:{backgroundColor:'#027DB4'}}} />
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'חומר אפל', headerTitleAlign: 'center', headerTintColor: '#fff', headerStyle: { backgroundColor: '#027DB4' } }} />
           <Stack.Screen name="Question" component={QuestionScreen} />
-          <Stack.Screen name="Systems" component={SystemsScreen} options={{ title: 'מערכות קיימות' ,headerTitleAlign:'center',headerTintColor: '#fff',headerStyle:{backgroundColor:'#027DB4'}}}/>
+          <Stack.Screen name="Systems" component={SystemsScreen} options={{ title: 'מערכות קיימות', headerTitleAlign: 'center', headerTintColor: '#fff', headerStyle: { backgroundColor: '#027DB4' } }} />
           <Stack.Screen name="Control" component={ControlScreen} />
-          <Stack.Screen name="System" component={SystemScreen} options={{ title: 'אפשרויות' ,headerTitleAlign:'center',headerTintColor: '#fff',headerStyle:{backgroundColor:'#027DB4'}}}/>
+          <Stack.Screen name="System" component={SystemScreen} options={{ title: 'אפשרויות', headerTitleAlign: 'center', headerTintColor: '#fff', headerStyle: { backgroundColor: '#027DB4' } }} />
           <Stack.Screen name="SystemDetails" component={SystemDetailsScreen} />
-          <Stack.Screen name="NewSystem" component={NewSystemScreen}  options={{ title: 'הוספת מערכת' ,headerTitleAlign:'center',headerTintColor: '#fff',headerStyle:{backgroundColor:'#027DB4'}}} />
+          <Stack.Screen name="NewSystem" component={NewSystemScreen} options={{ title: 'הוספת מערכת', headerTitleAlign: 'center', headerTintColor: '#fff', headerStyle: { backgroundColor: '#027DB4' } }} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>
   );
 }
-
-
 
 const styles = StyleSheet.create({
   container: {

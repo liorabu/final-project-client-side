@@ -33,11 +33,13 @@ const styles = StyleSheet.create({
 
     },
     image: {
-        aspectRatio: 1.3,
-        resizeMode: 'contain',
-        alignSelf: 'center',
-        bottom: "5%",
-        backgroundColor:'black',
+        alignSelf:'center',
+        marginVertical:'2%'
+        // aspectRatio: 1.3,
+        // resizeMode: 'contain',
+        // alignSelf: 'center',
+        // bottom: "5%",
+        // backgroundColor:'black',
        
     },
     textStyle: {
