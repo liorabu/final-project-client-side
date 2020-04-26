@@ -39,7 +39,7 @@ export default QuestionScreen = (props) => {
             <MainButton
                 title="לשאלה הבאה"
                 onPress={() => { console.warn('next!'); }}
-                width="65%" margin="20%" />
+                width="65%" margin="20%" top = {15} />
         </View>
     );
 }

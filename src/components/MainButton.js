@@ -2,10 +2,12 @@ import React from 'react';
 import { Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 export default MainButton = (props) => {
-
+console.log(props)
 
     let buttonWidth = '100%';
     let buttonmargin = '0%';
+    let buttonHeight='8%';
+    let buttomtop=props.top;
 
     if(props.width){
         buttonWidth = props.width;
@@ -14,10 +16,13 @@ export default MainButton = (props) => {
     if(props.margin){
         buttonmargin = props.margin;
     }
+    if(props.height){
+        buttonHeight=props.height;
+    }
 
     return (
         <TouchableOpacity
-            style={[styles.buttonContainer, {width: buttonWidth, margin:buttonmargin, }]}
+            style={[styles.buttonContainer, {width: buttonWidth, margin:buttonmargin, height:buttonHeight, }]}
             onPress={props.onPress}>
             
             <Text style={styles.buttonText}>{props.title}</Text>
@@ -29,16 +34,20 @@ export default MainButton = (props) => {
 const styles = StyleSheet.create({
     buttonContainer: {
         backgroundColor: '#169BD5',
-        height: '8%',
         paddingVertical: '3%',
-        borderRadius: 3,
+        borderRadius: 5,
         alignSelf: 'center',
+       
     },
 
     buttonText: {
         color: 'white',
         textAlign: 'center',
         top:4,
-        fontSize:17
+        fontSize:20,
+        flexDirection:'column',
+        alignSelf:'center',
+       textAlign:'center',
+     top:'8%'
     }
 });

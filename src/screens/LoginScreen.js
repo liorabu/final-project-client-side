@@ -1,11 +1,12 @@
 import React from 'react';
 import { Text, StyleSheet, View, Button, TouchableOpacity, Image, TextInput } from 'react-native';
+import MainButton from '../components/MainButton';
 
 export default LoginScreen = () => {
     return (
         <View style={styles.container}>
             <Image style={styles.image} source={require('../assets/cyber_logo.jpg')} />
-            <View >
+            <View style={styles.dataContainer}>
                 <Text style={styles.textStyle}>מספר ארגון</Text>
                 <TextInput
                     style={styles.input}
@@ -20,7 +21,10 @@ export default LoginScreen = () => {
                     autoCapitalize="none"
                     autoCorrect={false}
                 />
+
             </View>
+            <MainButton title="התחבר" />
+            <Image style={styles.image} source={require('../assets/logo.png')} />
         </View>
     );
 }
@@ -35,12 +39,9 @@ const styles = StyleSheet.create({
     image: {
         alignSelf:'center',
         marginVertical:'2%'
-        // aspectRatio: 1.3,
-        // resizeMode: 'contain',
-        // alignSelf: 'center',
-        // bottom: "5%",
-        // backgroundColor:'black',
-       
+    },
+    dataContainer:{
+        marginVertical:15,
     },
     textStyle: {
         fontSize: 18,
