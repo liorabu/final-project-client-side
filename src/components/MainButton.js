@@ -2,7 +2,6 @@ import React from 'react';
 import { Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 export default MainButton = (props) => {
-console.log(props)
 
     let buttonWidth = '100%';
     let buttonmargin = '0%';
@@ -23,7 +22,8 @@ console.log(props)
     return (
         <TouchableOpacity
             style={[styles.buttonContainer, {width: buttonWidth, margin:buttonmargin, height:buttonHeight, }]}
-            onPress={props.onPress}>
+            onPress={props.onPress}
+            >
             
             <Text style={styles.buttonText}>{props.title}</Text>
         
