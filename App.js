@@ -20,8 +20,8 @@ export default function App() {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Navigator >
+          <Stack.Screen name="Login" component={LoginScreen}  options={{headerShown: false}}/>
           <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'חומר אפל', headerTitleAlign: 'center', headerTintColor: '#fff', headerStyle: { backgroundColor: '#027DB4' } }} />
           <Stack.Screen name="Question" component={QuestionScreen} />
           <Stack.Screen name="Systems" component={SystemsScreen} options={{ title: 'מערכות קיימות', headerTitleAlign: 'center', headerTintColor: '#fff', headerStyle: { backgroundColor: '#027DB4' } }} />

@@ -2,7 +2,6 @@ import React from 'react';
 import { Text, StyleSheet, View, Button, TouchableOpacity, FlatList, TextInput } from 'react-native';
 import MainButton from '../components/MainButton';
 import { Dropdown } from 'react-native-material-dropdown';
-import { Checkbox } from '@material-ui/core';
 
 const maxRisk = [
     { key: 1, value: 'דליפת גז רעיל' },
@@ -55,7 +54,7 @@ export default NewSystemScreen = ({ navigation }) => {
                 onPress={() => { navigation.navigate('Systems') }}
                 width="65%" margin="20%"
             />
-<Checkbox label="I Agree" value="agree" checked={true} />
+
 
         </View>
     );

@@ -32,6 +32,19 @@ export async function login(userNumber, userPassword) {
 
   return await users.findOne({number: parseInt(userNumber), password: userPassword});
 }
+// export async function getSystems(userId) {
+//   // console.log("trying to login");
+
+//   await loadClient();
+
+//   const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory,"mongodb-atlas");
+//   const db = mongoClient.db("CyberDefence");
+//   const systems = db.collection("systems");
+
+//   // console.log("search for user");
+
+//   return await systems.find({userId:userId});
+// }
 
 
 

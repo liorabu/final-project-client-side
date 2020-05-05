@@ -1,44 +1,51 @@
 import React, { useState } from 'react';
-import { Text, StyleSheet, View, Button, TouchableOpacity, Image, TextInput, AsyncStorage } from 'react-native';
+import { Text, StyleSheet, View, Button, TouchableOpacity, Image, TextInput, AsyncStorage ,Alert,KeyboardAvoidingView,ScrollView } from 'react-native';
 import MainButton from '../components/MainButton';
-import {login, loadClient} from '../utils/MongoDbUtils';
+import { login, loadClient } from '../utils/MongoDbUtils';
 
 class LoginScreen extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.state = {
             username: '',
-            password: ''
+            password: '',
         }
     }
 
     handleLoginClick = () => {
-        login(this.state.username, this.state.password)
-            .then(result => {
-                if(!result){
-                    console.log('invalid usernumber / password');
-                    return;
-                }
+        if (this.state.username == '' || this.state.password == '') {
+            Alert.alert('', 'יש להכניס מספר ארגון וסיסמה',[{text: 'אישור'}])
+        }
+        else {
+            login(this.state.username, this.state.password)
+                .then(result => {
+                    if (!result) {
+                        Alert.alert('', 'הנתונים שהוזנו לא תואמים את המידע שברשותנו',[{text: 'אישור'}])
+                        console.log('invalid usernumber / password');
+                        return;
+                    }
 
-                console.log('login success' , result);
-                this.props.navigation.navigate('Home',{user: result});
-            })
-            .catch(error => {
-                console.log('login failed' , error);
-            });
+                    console.log('login success', result);
+
+                    this.props.navigation.navigate('Home');
+                })
+                .catch(error => {
+                    console.log('login failed', error);
+                });
+        }
+      
     }
 
-    render(){
+    render() {
+        const { showAlert } = this.state;
         return (
-
-            <View style={styles.container}>
-
+            <View style={styles.container} >
                 <Image style={styles.image} source={require('../assets/cyber_logo.jpg')} />
                 <View style={styles.dataContainer}>
                     <Text style={styles.textStyle}>מספר ארגון</Text>
                     <TextInput
-                        onChangeText={(text) => this.setState({username: text})}
+                        onChangeText={(text) => this.setState({ username: text })}
                         value={this.state.username}
                         placeholder='מספר ארגון'
                         style={styles.input}
@@ -47,7 +54,7 @@ class LoginScreen extends React.Component {
                     />
                     <Text style={styles.textStyle}>סיסמה</Text>
                     <TextInput
-                        onChangeText={(text) => this.setState({password: text})}
+                        onChangeText={(text) => this.setState({ password: text })}
                         value={this.state.password}
                         placeholder='סיסמה'
                         style={styles.input}
@@ -56,7 +63,6 @@ class LoginScreen extends React.Component {
                         autoCapitalize="none"
                         autoCorrect={false}
                     />
-
                 </View>
                 <MainButton title="התחבר" onPress={this.handleLoginClick} />
                 <Image style={styles.image} source={require('../assets/logo.png')} />
@@ -71,12 +77,12 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "white",
         paddingHorizontal: 20,
-        justifyContent: 'center',
+        justifyContent:'center',
 
     },
     image: {
         alignSelf: 'center',
-        marginVertical: '2%'
+        marginVertical: '2%',
     },
     dataContainer: {
         marginVertical: 15,
@@ -94,6 +100,13 @@ const styles = StyleSheet.create({
         fontSize: 15,
         marginBottom: '2%'
     },
+    header:{
+        backgroundColor:'red'
+    },
+    keyboardViewContainer: {
+        width: '100%', 
+        alignItems: 'center'
+      },
 })
 
 export default LoginScreen;
