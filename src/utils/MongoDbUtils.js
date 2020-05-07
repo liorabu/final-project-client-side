@@ -2,17 +2,17 @@ import { Stitch, UserPasswordCredential, RemoteMongoClient } from "mongodb-stitc
 
 let wasClientLoaded = false;
 
-async function loadClient(){
-  if(wasClientLoaded){
+async function loadClient() {
+  if (wasClientLoaded) {
     return;
   }
 
   // console.log('try to connect to mongo-db');
-  
+
   const client = await Stitch.initializeDefaultAppClient("cyber-xlqpr");
   const user = await client.auth.loginWithCredential(new UserPasswordCredential('cyberDSystem@gmail.com', 'CyberStitch2020'));
 
-  if(!user){
+  if (!user) {
     throw new Execption("Failed to connect to mongo-db");
   }
 
@@ -20,31 +20,43 @@ async function loadClient(){
 }
 
 export async function login(userNumber, userPassword) {
-  // console.log("trying to login");
 
   await loadClient();
 
-  const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory,"mongodb-atlas");
+  const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
   const db = mongoClient.db("CyberDefence");
   const users = db.collection("users");
 
   // console.log("search for user");
-
-  return await users.findOne({number: parseInt(userNumber), password: userPassword});
+  return await users.findOne({ number: parseInt(userNumber), password: userPassword });
 }
-// export async function getSystems(userId) {
-//   // console.log("trying to login");
+export async function getSystems(userId) {
+  // await loadClient();
+  const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
+  const db = mongoClient.db("CyberDefence");
+  const systems = db.collection("Systems");
+  
+  const data = await systems.find({ userId: userId });
+  return await data.toArray();
+}
 
-//   await loadClient();
+export async function saveSystem(userId,name,materialName,maxRisk, status, LevelOfRisk, MaxRisk) {
+  const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
+  const db = mongoClient.db("CyberDefence");
+  const systems = db.collection("Systems");
+  return await systems.insertOne({ userId: userId, name: name, status: status, LevelOfRisk: parseInt(LevelOfRisk), MaxRisk: maxRisk });
+}
 
-//   const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory,"mongodb-atlas");
-//   const db = mongoClient.db("CyberDefence");
-//   const systems = db.collection("systems");
+export async function getMaxRist() {
+  const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
+  const db = mongoClient.db("CyberDefence");
+  const risks = db.collection("MaxRisk");
+  const data = await risks.find();
+  return await data.toArray();
+  
+}
 
-//   // console.log("search for user");
 
-//   return await systems.find({userId:userId});
-// }
 
 
 
@@ -77,7 +89,7 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 
 
 /*
-export async function checkConnection(onSuccessCallback, onFailureCallback){  
+export async function checkConnection(onSuccessCallback, onFailureCallback){
   try {
     await client.connect();
     onSuccessCallback();

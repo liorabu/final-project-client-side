@@ -1,38 +1,71 @@
 import React from 'react';
-import { Text, StyleSheet, View, Button, TouchableOpacity, FlatList } from 'react-native';
+import { Text, StyleSheet, View, Button, TouchableOpacity, FlatList, Alert } from 'react-native';
 import { BaseRouter } from '@react-navigation/native';
+import { getSystems, loadClient } from '../utils/MongoDbUtils';
+import { UserContext } from '../contexts/UserContext'
 
-export default SystemsScreen = ({navigation}) => {
-    const Systems = [
-        { id: '1', name: 'מערכת 1', status: 'חישוב רמת סיכון', LevelOfRisk: 'בתהליך', MaxRisk: 'סיכון 1' },
-        { id: '2', name: 'מערכת 2', status: 'ביצוע בקרות', LevelOfRisk: 3, MaxRisk: 'סיכון 2' },
-        { id: '3', name: 'מערכת 3', status: 'חישוב רמת סיכון', LevelOfRisk: 'בתהליך', MaxRisk: 'סיכון 4' },
-        { id: '4', name: 'מערכת 4', status: 'סיום', LevelOfRisk: 1, MaxRisk: 'סיכון 1' },
-        { id: '5', name: 'מערכת 5', status: 'סיום', LevelOfRisk: 1, MaxRisk: 'סיכון 1' },
-        { id: '6', name: 'מערכת 6', status: 'סיום', LevelOfRisk: 1, MaxRisk: 'סיכון 1' },
-        { id: '7', name: 'מערכת 7', status: 'חישוב רמת סיכון', LevelOfRisk: 'בתהליך', MaxRisk: 'סיכון 4' },
-        { id: '8', name: 'מערכת 8', status: 'סיום', LevelOfRisk: 1, MaxRisk: 'סיכון 1' },
-        { id: '9', name: 'מערכת 9', status: 'סיום', LevelOfRisk: 1, MaxRisk: 'סיכון 1' },
-    ];
-    return (
-        <FlatList style={styles.container}
-            // numColumns={3}
-            showsHorizontalScrollIndicator={true}
-            // keyExtractor={(System) => System.id}
-            data={Systems}
-            renderItem={({ item }) => {
-                return (
 
-                    <TouchableOpacity style={styles.systemContainer} onPress={()=>{navigation.navigate('System',{item})}}>
-                        <Text style={styles.systemName} >
-                            שם המערכת: {item.name}
-                        </Text>
-                        <Text >סטטוס: {item.status}</Text>
-                    </TouchableOpacity>
-                );
-            }}
-        />
-    )
+
+class SystemsScreen extends React.Component {
+
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            systems: [],
+            isLoading: false
+        }
+    }
+
+    componentDidMount() {
+
+        this.loadMySystems();
+    }
+
+    loadMySystems = () => {
+        // console.log(this.context.userNumber)
+        getSystems(this.context.userNumber).then(result => {
+            if (!result) {
+
+                // console.log('there are no systems');
+                return;
+            }
+            this.setState({
+                systems: result      
+            });
+        }).catch(error => {
+            console.log('fail', error);
+        });
+    }
+
+    render() {
+        // console.log(this.state.systems)
+        // this.context.setUserNumber(123);
+
+        return (
+
+            <View>
+                 <FlatList 
+                    showsHorizontalScrollIndicator={true}
+                    data={this.state.systems}
+                    renderItem={({ item }) => {
+                       console.log(item)
+                        return (
+                            // <TouchableOpacity style={styles.systemContainer} onPress={() => { navigation.navigate('System', { item }) }}>
+                          <TouchableOpacity style={styles.systemContainer}>
+                                <Text style={styles.systemName} >
+                                    שם המערכת: {item.name}
+                                </Text>
+                                <Text >סטטוס: {item.status}</Text>
+                             </TouchableOpacity>
+                        );
+                    }}
+                /> 
+            
+            </View>
+        )
+    }
 }
 
 const styles = StyleSheet.create({
@@ -54,11 +87,11 @@ const styles = StyleSheet.create({
         marginHorizontal: '1%'
 
     },
-    systemName: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        marginTop: 0
-    },
+    // systemName: {
+    //     fontSize: 16,
+    //     fontWeight: 'bold',
+    //     marginTop: 0
+    // },
     systemDetails: {
         fontSize: 14,
         marginVertical: 3
@@ -69,3 +102,7 @@ const styles = StyleSheet.create({
     }
 });
 
+
+SystemsScreen.contextType = UserContext;
+
+export default SystemsScreen;

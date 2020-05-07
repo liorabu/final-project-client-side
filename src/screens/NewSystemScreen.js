@@ -1,65 +1,164 @@
 import React from 'react';
-import { Text, StyleSheet, View, Button, TouchableOpacity, FlatList, TextInput } from 'react-native';
+import { Text, StyleSheet, View, Button, TouchableOpacity, FlatList, TextInput, Alert } from 'react-native';
 import MainButton from '../components/MainButton';
 import { Dropdown } from 'react-native-material-dropdown';
+import { saveSystem, getMaxRist } from '../utils/MongoDbUtils';
+import { UserContext } from '../contexts/UserContext'
 
-const maxRisk = [
-    { key: 1, value: 'דליפת גז רעיל' },
-    { key: 2, value: 'דליפת גז רעיל/ פציץ' },
-    { key: 3, value: 'שפיכת נוזל רעיל' },
-    { key: 4, value: 'שפיכת נוזל רעיל/ פציץ' },
-    { key: 5, value: 'פיצוץ BLEVE' },
-    { key: 6, value: 'פיצוץ UVCE' },
-    { key: 7, value: 'ריאקציה מסוכנת' },
-    { key: 8, value: 'פיצוץ או דליקה בסמוך לחומ"ס' },
-    { key: 9, value: 'הצפה או מפגע אחר בסמוך לחומ"ס' },
-    { key: 10, value: 'שיבוש סימון או רישום של חומ"ס' },
-    { key: 11, value: 'שפיכת חומ"ס למערכת הביוב' },
-    { key: 12, value: 'שפיכת חומ"ס לסביבה' },
-    { key: 13, value: 'שפיכת חומ"ס לנחל או לים' },
-    { key: 14, value: 'תקלה מסכנת חיים אחרת' },
-    { key: 15, value: 'תקלה מסכנת סביבה אחרת' },
-    { key: 16, value: 'תקלה שאינה מסכנת חיים או סביבה' },
+// const maxRisk = [
+//     { key: 1, value: 'דליפת גז רעיל' },
+//     { key: 2, value: 'דליפת גז רעיל/ פציץ' },
+//     { key: 3, value: 'שפיכת נוזל רעיל' },
+//     { key: 4, value: 'שפיכת נוזל רעיל/ פציץ' },
+//     { key: 5, value: 'פיצוץ BLEVE' },
+//     { key: 6, value: 'פיצוץ UVCE' },
+//     { key: 7, value: 'ריאקציה מסוכנת' },
+//     { key: 8, value: 'פיצוץ או דליקה בסמוך לחומ"ס' },
+//     { key: 9, value: 'הצפה או מפגע אחר בסמוך לחומ"ס' },
+//     { key: 10, value: 'שיבוש סימון או רישום של חומ"ס' },
+//     { key: 11, value: 'שפיכת חומ"ס למערכת הביוב' },
+//     { key: 12, value: 'שפיכת חומ"ס לסביבה' },
+//     { key: 13, value: 'שפיכת חומ"ס לנחל או לים' },
+//     { key: 14, value: 'תקלה מסכנת חיים אחרת' },
+//     { key: 15, value: 'תקלה מסכנת סביבה אחרת' },
+//     { key: 16, value: 'תקלה שאינה מסכנת חיים או סביבה' },
 
-]
+// ]
 
-export default NewSystemScreen = ({ navigation }) => {
-    return (
-        <View style={styles.container}>
-            <Text style={styles.textStyle}>שם המערכת</Text>
-            <TextInput
-                style={styles.input}
-                autoCapitalize="none"
-                autoCorrect={false}
-                placeholder="מערכת כלשהי"
-            />
-            <Text style={styles.textStyle}>חומרים מסוכנים בשימוש המערכת</Text>
-            <TextInput
-                style={styles.textArea}
-                placeholder="חומר כלשהו"
-                numberOfLines={10}
-                multiline={true}
-            />
-            <Dropdown
-                style={styles.dropDown}
-                label="סיכון מקסימלי"
-                data={maxRisk}
-                lineWidth={0}
-                activeLineWidth={0}
-                disabledLineWidth={0}
-            />
+class NewSystemScreen extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            systemName: '',
+            materialName: '',
+            maxRisk: '',
+            risks:[],
+        }
+    }
 
-            <MainButton
-                title="הוספה לרשימת המערכות"
-                onPress={() => { navigation.navigate('Systems') }}
-                width="65%" margin="20%"
-            />
+    componentDidMount() {
+
+        this.loadMaxRisk();
+    }
+
+    loadMaxRisk = () => {
+        getMaxRist().then(result => {
+            if (!result) {
+
+                // console.log('there are no systems');
+                return;
+            }
+
+            this.setState({
+                risks: result
+
+            });
+        }).catch(error => {
+            // console.log('fail', error);
+        });
+    }
+
+    saveMySystem = () => {
+        if (this.state.systemName == '' || this.state.materialName == '' || this.state.maxRisk == '') {
+            Alert.alert('', 'יש למלא את כל השדות לצורך הוספת המערכת', [{ text: 'אישור' }])
+        }
+        else {
+            //  Alert.alert('', 'יש למלא את כל השדות לצורך sdfsd המערכת',[{text: 'אישור'}])
+            let status = "חישוב רמת סיכון";
+            let levelOfRisk = 1;
+            saveSystem(this.context.userNumber,this.state.systemName,this.state.materialName,this.state.maxRisk, status, levelOfRisk).then(result => {
 
 
-        </View>
-    );
+                // if (!result) {
+                //     Alert.alert('הנתונים לא נשמרו',[{text: 'אישור'}])
+                //     console.log('invalid usernumber / password');
+                //     return;
+                // }
 
+                // console.log('saving success', result);
+
+                // this.props.navigation.navigate('Home');
+            })
+        }
+    }
+
+    render() {
+        return (
+            <View style={styles.container}>
+                <Text style={styles.textStyle}>שם המערכת</Text>
+                <TextInput
+                    onChangeText={(text) => this.setState({ systemName: text })}
+                    style={styles.input}
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    placeholder="מערכת כלשהי"
+                />
+                <Text style={styles.textStyle}>חומרים מסוכנים בשימוש המערכת</Text>
+                <TextInput
+                    onChangeText={(text) => this.setState({ materialName: text })}
+                    style={styles.textArea}
+                    placeholder="חומר כלשהו"
+                    numberOfLines={10}
+                    multiline={true}
+                />
+                <Dropdown
+                    onChangeText={(text) => this.setState({ maxRisk: text })}
+                    style={styles.dropDown}
+                    label="סיכון מקסימלי"
+                    data={this.state.risks}
+                    valueExtractor={(item) => item.risk}
+                    lineWidth={0}
+                    activeLineWidth={0}
+                    disabledLineWidth={0}
+                />
+                <MainButton
+                    title="הוספה לרשימת המערכות"
+                    onPress={this.saveMySystem}
+                    width="65%" margin="20%"
+                />
+            </View>
+        );
+    }
 }
+
+
+// export default NewSystemScreen = ({ navigation }) => {
+//     return (
+//         <View style={styles.container}>
+//             <Text style={styles.textStyle}>שם המערכת</Text>
+//             <TextInput
+//                 style={styles.input}
+//                 autoCapitalize="none"
+//                 autoCorrect={false}
+//                 placeholder="מערכת כלשהי"
+//             />
+//             <Text style={styles.textStyle}>חומרים מסוכנים בשימוש המערכת</Text>
+//             <TextInput
+//                 style={styles.textArea}
+//                 placeholder="חומר כלשהו"
+//                 numberOfLines={10}
+//                 multiline={true}
+//             />
+//             <Dropdown
+//                 style={styles.dropDown}
+//                 label="סיכון מקסימלי"
+//                 data={maxRisk}
+//                 lineWidth={0}
+//                 activeLineWidth={0}
+//                 disabledLineWidth={0}
+//             />
+
+//             <MainButton
+//                 title="הוספה לרשימת המערכות"
+//                 onPress={() => { navigation.navigate('Systems') }}
+//                 width="65%" margin="20%"
+//             />
+
+
+//         </View>
+//     );
+
+// }
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -95,10 +194,11 @@ const styles = StyleSheet.create({
         width: '100%',
         borderRadius: 10,
         fontSize: 17,
-        borderWidth:1,
+        borderWidth: 1,
         borderColor: '#169BD5',
-       textAlign:'center',
-        height:40
+        textAlign: 'center',
+        height: 40
     },
 });
-
+NewSystemScreen.contextType = UserContext;
+export default NewSystemScreen;

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Text, StyleSheet, View, Button, TouchableOpacity, Image, TextInput, AsyncStorage ,Alert,KeyboardAvoidingView,ScrollView } from 'react-native';
 import MainButton from '../components/MainButton';
 import { login, loadClient } from '../utils/MongoDbUtils';
+import {UserContext} from '../contexts/UserContext';
 
 class LoginScreen extends React.Component {
     constructor(props) {
@@ -27,7 +28,7 @@ class LoginScreen extends React.Component {
                     }
 
                     console.log('login success', result);
-
+                    this.context.setUserNumber(result._id);
                     this.props.navigation.navigate('Home');
                 })
                 .catch(error => {
@@ -38,7 +39,7 @@ class LoginScreen extends React.Component {
     }
 
     render() {
-        const { showAlert } = this.state;
+        // const { showAlert } = this.state;
         return (
             <View style={styles.container} >
                 <Image style={styles.image} source={require('../assets/cyber_logo.jpg')} />
@@ -108,5 +109,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
       },
 })
+
+LoginScreen.contextType = UserContext;
 
 export default LoginScreen;

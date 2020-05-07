@@ -12,6 +12,16 @@ import MainButton from '../components/MainButton';
 export default QuestionScreen = (props) => {
     const { route } = props;
     const [answer, setAnswer] = useState('answer1');
+
+    // 1. load the questions []
+    // 2. [] -> state
+    // 3. this.state = { currentQuestion: 0 }
+    // 4. render()
+    //          this.state.questions[ this.state.currentQuestion ]
+    // 5. this.setState({ currentQuestion: currentQuestion + 1 }) ***
+    // 6. if(this.state.currentQuestion >= 3){ ...save }
+
+
     return (
         <View style={styles.container}>
             <View style={styles.questionContainer}>
