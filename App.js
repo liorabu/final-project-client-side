@@ -17,10 +17,10 @@ import { createSwitchNavigator } from 'react-navigation';
 const Stack = createStackNavigator();
 
 export default function App() {
-  const [userNumber, setUserNumber] = React.useState(0);
+  const [userId, setUserId] = React.useState(0);
   // const [userId, setUserId] = React.useState(0);
-
-  const value = { userNumber, setUserNumber};
+const [systemId, setSystemId] =React.useState(0);
+  const value = { userId, setUserId, systemId, setSystemId};
 
   return (
     <UserContext.Provider value={value}>

@@ -6,7 +6,7 @@ export default MainButton = (props) => {
     let buttonWidth = '100%';
     let buttonmargin = '0%';
     let buttonHeight='8%';
-    let buttomtop=props.top;
+    let buttonMarginTop='12%';
 
     if(props.width){
         buttonWidth = props.width;
@@ -18,10 +18,16 @@ export default MainButton = (props) => {
     if(props.height){
         buttonHeight=props.height;
     }
+    if(props.marginTop){
+        buttonMarginTop=props.marginTop;
+    }
+
+
+
 
     return (
         <TouchableOpacity
-            style={[styles.buttonContainer, {width: buttonWidth, margin:buttonmargin, height:buttonHeight, }]}
+            style={[styles.buttonContainer, {width: buttonWidth, margin:buttonmargin, height:buttonHeight,marginTop:buttonMarginTop  }]}
             onPress={props.onPress}
             >
             
@@ -37,6 +43,7 @@ const styles = StyleSheet.create({
         paddingVertical: '3%',
         borderRadius: 5,
         alignSelf: 'center',
+      
        
     },
 

@@ -3,9 +3,21 @@ import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 
 export default Answer = (props) => {
 
+    selectedStyle = {};
+    selectedTouchableStyle = {};
+    if(props.selected){
+        selectedStyle = {
+            fontWeight: 'bold',
+        },
+        selectedTouchableStyle = {
+            backgroundColor:'#D3D3D3'
+        }
+
+    }
+
     return (
-        <TouchableOpacity style={styles.answerContainer} onPress={props.onPress}>
-            <Text style={styles.answerText}>{props.text}</Text>
+        <TouchableOpacity style={[styles.answerContainer,selectedTouchableStyle]} onPress={props.onPress}>
+            <Text style={[styles.answerText, selectedStyle]}>{props.text}</Text>
         </TouchableOpacity>
     );
 };
