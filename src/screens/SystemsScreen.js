@@ -16,12 +16,24 @@ class SystemsScreen extends React.Component {
             systems: [],
             isLoading: false
         }
+
+        const unsubscribeFocus = null;
     }
 
     componentDidMount() {
         this.loadMySystems();
+        this.unsubscribeFocus = this.props.navigation.addListener('focus', this.onScreenFocus);
     }
 
+    componentWillUnmount(){
+        if(this.unsubscribeFocus){
+            this.unsubscribeFocus();
+        }
+    }
+
+    onScreenFocus = () => {
+        this.loadMySystems();
+    }
 
     loadMySystems = () => {
         getSystems(this.context.userId).then(result => {
@@ -54,10 +66,34 @@ class SystemsScreen extends React.Component {
             if (!result) {
                 return;
             }
+
+            this.setState((prevState) => {
+                const systemIndex = prevState.systems.findIndex((item) => item._id == systemId);
+                const newSystems = [ ...prevState.systems ];
+                newSystems.splice(systemIndex, 1);
+
+                return {
+                    systems: newSystems
+                }
+            });
         }).catch(error => {
             console.log('fail', error);
         });
 
+    }
+
+    backgroundBytage=(system)=>{
+        if(system.status=="חישוב רמת סיכון"){
+            return "#d7dbdd"
+        }
+        else if(system.status=="ביצוע בקרות"){
+            return "#FFDDEE"
+        }
+        else if(system.status=="סיום"){
+            return "#f9ebea"
+        }
+
+       
     }
 
     render() {
@@ -77,7 +113,7 @@ class SystemsScreen extends React.Component {
                     <View>
                         {
                             this.state.systems.map((item) => {
-                                return (<TouchableOpacity style={styles.systemContainer} key={item._id} onPress={() => { this.getSystemData(item) }}
+                                return (<TouchableOpacity style={[styles.systemContainer,{backgroundColor:this.backgroundBytage(item)}]} key={item._id} onPress={() => { this.getSystemData(item) }}
                                     onLongPress={() => { this.DeleteAlert(item._id) }}>
                                     <Text style={styles.systemName} >
                                         שם המערכת: {item.name}
@@ -104,10 +140,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     loadingText: {
-        fontSize: 25
+        fontSize: 23
     },
     loadingLink: {
-        fontSize: 20,
+        fontSize: 19,
         color: '#acacac',
         fontWeight: 'bold'
     },

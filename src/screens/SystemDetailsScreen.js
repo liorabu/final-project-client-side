@@ -61,7 +61,7 @@ marginTop:'6%'
         justifyContent: 'space-between',
     },
     dataText: {
-        fontSize: 16,
+        // fontSize: 40,
         marginVertical: '0.5%',
     }
 

@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
         marginTop: '6%',
     },
     title: {
-        fontSize: 30,
+        fontSize: 25,
         fontWeight: 'bold',
         marginBottom: '5%',
     },
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
         // alignSelf: 'flex-start'
     },
     dataText: {
-        fontSize: 16,
+        fontSize: 13,
         marginVertical: '0.5%',
         // alignSelf:'flex-end'
         // width: '50%',

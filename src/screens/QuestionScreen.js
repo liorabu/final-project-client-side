@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Button, TouchableOpacity, FlatList, Alert, Scro
 import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from 'react-native-simple-radio-button';
 import Answer from '../components/Answer';
 import MainButton from '../components/MainButton';
-import { getExposureQuestions, saveExposureAnswers, saveExposureLevel, getDamageQuestions, saveDamageAnswers, saveDamageLevel, loadClient } from '../utils/MongoDbUtils';
+import { getExposureQuestions, saveExposureAnswers, saveExposureLevel, getDamageQuestions, saveDamageAnswers, saveDamageLevel, getAnswers, loadClient } from '../utils/MongoDbUtils';
 import { UserContext } from '../contexts/UserContext'
 
 class QuestionScreen extends React.Component {
@@ -11,7 +11,7 @@ class QuestionScreen extends React.Component {
         super(props);
         this.state = {
             questions: [],
-            currentQuestion: 0,
+            currentQuestion: 1,
             answers: [],
             currentAnswer: null,
             buttonHeight: '8%',
@@ -22,6 +22,7 @@ class QuestionScreen extends React.Component {
 
     componentDidMount() {
         this.loadQuestions();
+        this.loadMyAnswers();
     }
 
     //pull the questions from mongodb
@@ -33,7 +34,7 @@ class QuestionScreen extends React.Component {
                 }
                 this.setState({
                     questions: result,
-                    answers: []
+                    // answers: []
                 });
             }).catch(error => {
                 console.log('fail', error);
@@ -52,7 +53,7 @@ class QuestionScreen extends React.Component {
                 }
                 this.setState({
                     questions: result,
-                    answers: []
+                    // answers: []
                 });
             }).catch(error => {
                 console.log('fail', error);
@@ -60,15 +61,61 @@ class QuestionScreen extends React.Component {
         }
     }
 
+    // get the answers of the system for show them
+    loadMyAnswers = () => {
+        getAnswers(this.context.systemId, this.props.route.params.questionType).then(result => {
+            if (!result) {
+                return;
+            }
+            else if (result.length > 0) {
+
+                const existsAnswer = result.find((item) => item.questionNumber == this.state.currentQuestion)
+
+                this.setState({
+                    answers: result,
+                    currentAnswer: (!existsAnswer) ? null : existsAnswer.answerId - 1
+                });
+            }
+            else if (result.length == 0) {
+                this.setState({
+                    answers: []
+                });
+            }
+        }).catch(error => {
+            console.log('fail', error);
+        });
+    }
+
     //saving array of the answers for calculating this Exposure number (P)
-    saveAnswer = (answerId) => {
+    saveAnswer = (questionId, answerId) => {
         this.setState((prevState) => {
             const newAnswers = [...prevState.answers];
-            newAnswers.push(answerId);
+            const answerIndex = newAnswers.findIndex((item) => item.questionNumber == questionId);
+
+            if (answerIndex <= -1) {
+                newAnswers.push({
+                    questionNumber: questionId,
+                    answerId: answerId
+                });
+            }
+            else {
+                newAnswers[answerIndex]['answerId'] = answerId;
+            }
             return {
                 answers: newAnswers
             }
         });
+       
+        if (this.state.answers.length == this.state.questions.length) {
+            console.log("gfdgfd")
+            if (this.props.route.params.questionType == 'exposure') {
+                this.calculateExposureLevel();
+            }
+            else if (this.props.route.params.questionType == 'damage') {
+                
+                this.calculateDamageLevel();
+            }
+        }
     }
 
     //saving the answers in mongodb
@@ -85,6 +132,7 @@ class QuestionScreen extends React.Component {
         }
         else if (this.props.route.params.questionType == 'damage') {
             saveDamageAnswers(this.context.userId, this.context.systemId, questionNumber, answerId).then(result => {
+                
                 if (!result) {
                     Alert.alert('', 'שמירת התשובה נכשלה, אנא נסה שוב', [{ text: 'אישור' }])
                 }
@@ -99,9 +147,12 @@ class QuestionScreen extends React.Component {
         let exposureLevel = 0;
         const answersNumbers = this.state.answers;
         for (let i = 0; i < answersNumbers.length; i++) {
-            exposureLevel += answersNumbers[i];
+            
+            exposureLevel += answersNumbers[i].answerId;
         }
+       
         exposureLevel = exposureLevel / (answersNumbers.length + 1);
+    
         saveExposureLevel(this.context.systemId, exposureLevel).then(result => {
             if (!result) {
                 Alert.alert('', 'לא בוצע חישוב רמת חשיפה', [{ text: 'אישור' }])
@@ -116,8 +167,8 @@ class QuestionScreen extends React.Component {
         let damageLevel = 0;
         const answersNumbers = this.state.answers;
         for (let i = 0; i < answersNumbers.length; i++) {
-            if (answersNumbers[i] > damageLevel)
-                damageLevel = answersNumbers[i];
+            if (answersNumbers[i].answerId > damageLevel)
+                damageLevel = answersNumbers[i].answerId;
         }
         saveDamageLevel(this.context.systemId, damageLevel).then(result => {
             if (!result) {
@@ -131,16 +182,15 @@ class QuestionScreen extends React.Component {
 
     render() {
         if (this.state.questions.length <= 0) {
-            return( <View style={styles.container} >
-                <Text style={styles.loadinQuestions}>השאלות נטענות,</Text>
-                <Text style={styles.loadinQuestions}>אנא המתן</Text>
-
-
-             </View>
-             );
+            return (
+                <View style={styles.container} >
+                    <Text style={styles.loadinQuestions}>השאלות נטענות,</Text>
+                    <Text style={styles.loadinQuestions}>אנא המתן</Text>
+                </View>
+            );
         };
         const { route } = this.props;
-        const showQuestion = this.state.questions[this.state.currentQuestion];
+        const showQuestion = this.state.questions[this.state.currentQuestion - 1];
         const showAnswers = showQuestion.answers.map((answer, index) => {
             return {
                 key: index.toString(),
@@ -159,57 +209,81 @@ class QuestionScreen extends React.Component {
                         <Text style={styles.questionText}>{showQuestion.body}</Text>
                     </View>
                     {
+
                         showAnswers.map((item, index) => {
-                            return <Answer
-                                key={item.key}
-                                text={item.text}
-                                selected={index == this.state.currentAnswer}
-                                onPress={() => { this.setState({ currentAnswer: index }) }} />
+
+                            return (
+
+                                <Answer
+                                    key={item.key}
+                                    text={item.text}
+                                    selected={index == this.state.currentAnswer}
+                                    onPress={() => { this.setState({ currentAnswer: index }) }} />
+
+
+
+                            )
                         })
                     }
                     {
-                        this.state.currentQuestion < this.state.questions.length - 1 ?
+                        this.state.currentQuestion < this.state.questions.length ?
                             (
                                 <MainButton
                                     title="לשאלה הבאה"
                                     onPress={() => {
-                                        if (this.state.currentAnswer && this.state.currentAnswer > -1) {
-                                            this.saveAnswer(this.state.currentAnswer + 1);
+                                        if (this.state.currentAnswer != null && this.state.currentAnswer > -1) {
+                                            this.saveAnswer(showQuestion.number, this.state.currentAnswer + 1);
                                             this.saveAnswerToMongoDb(showQuestion.number, this.state.currentAnswer + 1);
                                             this.setState((prevState) => {
+                                                const newQuestionId = prevState.currentQuestion + 1;
+                                                const existsAnswer = prevState.answers.find((item) => item.questionNumber == newQuestionId)
                                                 return {
-                                                    currentQuestion: prevState.currentQuestion + 1,
-                                                    currentAnswer: null
+                                                    currentQuestion: newQuestionId,
+                                                    currentAnswer: (!existsAnswer) ? null : existsAnswer.answerId - 1
                                                 };
                                             })
                                         }
                                         else {
-                                            console.log(this.state.currentAnswer)
                                             Alert.alert('', ' אנא בחר תשובה', [{ text: 'אישור' }])
                                         }
 
                                     }}
 
-                                    width="65%" margin="20%" height={this.state.buttonHeight} marginTop={this.state.ButtonTopMargin} />
+                                    width="65%" height={this.state.buttonHeight} marginTop={this.state.ButtonTopMargin} />
                             )
                             :
                             (
                                 <MainButton
                                     title="סיום"
                                     onPress={() => {
-                                        this.saveAnswer(this.state.currentAnswer + 1);
+                                        this.saveAnswer(showQuestion.number, this.state.currentAnswer + 1);
                                         this.saveAnswerToMongoDb(showQuestion.number, this.state.currentAnswer + 1);
-                                        if (this.props.route.params.questionType == 'exposure') {
-                                            this.calculateExposureLevel();
-                                        }
-                                        else if (this.props.route.params.questionType == 'damage') {
-                                            this.calculateDamageLevel();
-                                        }
+
                                         this.props.navigation.navigate('System');
                                     }}
                                     width="65%" height="20%" height={this.state.buttonHeight} marginTop={this.state.ButtonTopMargin} />
                             )
                     }
+
+{this.state.currentQuestion>1?
+                    <TouchableOpacity style={styles.previousTouchable} onPress={() => this.setState((prevState) => {
+                        const newQuestionId = prevState.currentQuestion - 1;
+                        const existsAnswer = prevState.answers.find((item) => item.questionNumber == newQuestionId)
+
+                        return {
+                            currentQuestion: newQuestionId,
+                            currentAnswer: (!existsAnswer) ? null : existsAnswer.answerId - 1
+                        };
+                    })}
+                    >
+                        <Text style={styles.previousText}>לשאלה הקודמת</Text>
+                    </TouchableOpacity>
+                    :
+                    null
+}
+
+
+
                 </View >
             </ScrollView>
         );
@@ -220,13 +294,13 @@ class QuestionScreen extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent:'center'
+        justifyContent: 'center'
     },
     loadinQuestions: {
-      
-        fontSize:20,
-        textAlign:'center',
-       marginBottom:'3%'
+
+        fontSize: 20,
+        textAlign: 'center',
+        marginBottom: '3%'
     },
 
     questionContainer: {
@@ -260,6 +334,15 @@ const styles = StyleSheet.create({
     },
     answer: {
         backgroundColor: '#ffffff'
+    },
+    previousTouchable: {
+        // bottom: 75,
+        alignSelf: 'center',
+        color: 'blue'
+    },
+    previousText:
+    {
+        color: '#169BD5'
     }
 });
 

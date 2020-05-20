@@ -88,7 +88,7 @@ class NewSystemScreen extends React.Component {
                     disabledLineWidth={0}
                 />
                 <MainButton
-                    title="הוספה לרשימת המערכות"
+                    title="הוספת המערכת"
                     onPress={this.saveMySystem}
                     width="65%" margin="20%"
                 />
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
 
     },
     textStyle: {
-        fontSize: 18,
+        fontSize: 16,
         marginTop: '5%',
     },
     input: {

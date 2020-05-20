@@ -91,7 +91,12 @@ export async function saveExposureAnswers(userId, systemId, questionNumber, answ
   const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
   const db = mongoClient.db("CyberDefence");
   const answer = db.collection("ExposureAnswers");
-  return await answer.insertOne({ userId: userId, systemId: systemId, questionNumber: questionNumber, answerId: answerId });
+  //  answer.insertOne({ userId: userId, systemId: systemId, questionNumber: questionNumber, answerId: answerId });
+  return await answer.updateOne(
+    { systemId: systemId,questionNumber: questionNumber },
+    { userId: userId, systemId: systemId, questionNumber: questionNumber, answerId: answerId },
+    { upsert: true }
+  );
 }
 
 export async function saveExposureLevel(systemId, exposureLevel) {
@@ -104,6 +109,7 @@ export async function saveExposureLevel(systemId, exposureLevel) {
   }, {
     $set: { exposureLevel: exposureLevel },
   })
+  return calculateRiskLevel(systemId);
 }
 export async function saveDamageLevel(systemId, damageLevel) {
   const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
@@ -115,7 +121,6 @@ export async function saveDamageLevel(systemId, damageLevel) {
   }, {
     $set: { damageLevel: damageLevel },
   })
-  console.log(systemId)
   return calculateRiskLevel(systemId);
 }
 
@@ -123,7 +128,11 @@ export async function saveDamageAnswers(userId, systemId, questionNumber, answer
   const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
   const db = mongoClient.db("CyberDefence");
   const answer = db.collection("DamageAnswers");
-  return await answer.insertOne({ userId: userId, systemId: systemId, questionNumber: questionNumber, answerId: answerId });
+  return await answer.updateOne(
+    { systemId: systemId,questionNumber: questionNumber },
+    { userId: userId, systemId: systemId, questionNumber: questionNumber, answerId: answerId },
+    { upsert: true }
+  );
 }
 
 export async function calculateRiskLevel(systemId) {
@@ -148,10 +157,12 @@ export async function calculateRiskLevel(systemId) {
     const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
     const db = mongoClient.db("CyberDefence");
     const systems = db.collection("Systems");
+    let status="ביצוע בקרות";
     return await systems.updateOne({
       _id: systemId,
     }, {
-      $set: { riskLevel: riskLevel },
+      $set: { riskLevel: riskLevel ,
+        status:status},
     })
   }
 }
@@ -164,6 +175,23 @@ export async function deleteSystem(systemId) {
   return await systems.deleteOne({_id:systemId});
 }
 
+
+export async function getAnswers(systemId,questionsType){
+  const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
+  const db = mongoClient.db("CyberDefence");
+  if(questionsType=="exposure"){
+    const answers = db.collection("ExposureAnswers");
+    const data = await answers.find({systemId:systemId});
+  return await data.toArray();
+  }
+  else if(questionsType=="damage"){
+    const answers = db.collection("DamageAnswers");
+   
+    const data = await answers.find({systemId:systemId});
+  return await data.toArray();
+  }
+  
+}
 
 
 
