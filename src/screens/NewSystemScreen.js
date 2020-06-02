@@ -1,9 +1,10 @@
 import React from 'react';
 import { Text, StyleSheet, View, Button, TouchableOpacity, FlatList, TextInput, Alert } from 'react-native';
 import MainButton from '../components/MainButton';
-import { Dropdown } from 'react-native-material-dropdown';
 import { saveSystem, getMaxRist } from '../utils/MongoDbUtils';
 import { UserContext } from '../contexts/UserContext'
+import { Picker } from '@react-native-community/picker'
+import CheckBox from '@react-native-community/checkbox';
 
 class NewSystemScreen extends React.Component {
     constructor(props) {
@@ -13,6 +14,7 @@ class NewSystemScreen extends React.Component {
             materialName: '',
             maxRisk: '',
             risks: [],
+            toggleCheckBox:false,
         }
     }
 
@@ -57,6 +59,13 @@ class NewSystemScreen extends React.Component {
             })
         }
     }
+    setToggleCheckBox=()=>{
+        this.setState((prevState) => {
+            return {
+                toggleCheckBox: !prevState.toggleCheckBox
+            }
+        });
+    }
 
     render() {
         return (
@@ -77,7 +86,33 @@ class NewSystemScreen extends React.Component {
                     numberOfLines={10}
                     multiline={true}
                 />
-                <Dropdown
+<Text style={styles.textStyle}>הסיכון המקסימלי שהמערכת מהווה</Text>
+                <View style={styles.dropDown}>
+                    <Picker
+                        selectedValue={this.state.maxRisk}
+                        style={{width: '100%', height: '100%'}}
+                        onValueChange={(itemValue, itemIndex) => { this.setState({ maxRisk: itemValue }) }}
+                    >
+                        <Picker.Item key="none" label="יש לבחור סיכון" value="" />
+                        {
+                            this.state.risks.map((item) => {
+                                return (
+                                    <Picker.Item
+                                        key={item._id}
+                                        label={item.risk}
+                                        value={item.risk} />
+                                );
+                            })
+                        }
+                    </Picker>
+                </View>
+                {/* <CheckBox
+    disabled={false}
+    value={this.state.toggleCheckBox}
+    onValueChange={() =>  this.setToggleCheckBox() }
+  /> */}
+
+                {/* <Dropdown
                     onChangeText={(text) => this.setState({ maxRisk: text })}
                     style={styles.dropDown}
                     label="סיכון מקסימלי"
@@ -86,7 +121,7 @@ class NewSystemScreen extends React.Component {
                     lineWidth={0}
                     activeLineWidth={0}
                     disabledLineWidth={0}
-                />
+                /> */}
                 <MainButton
                     title="הוספת המערכת"
                     onPress={this.saveMySystem}
@@ -132,10 +167,12 @@ const styles = StyleSheet.create({
         width: '100%',
         borderRadius: 10,
         fontSize: 17,
-        borderWidth: 1,
+        borderWidth: 3,
         borderColor: '#169BD5',
+        justifyContent:'center',
         textAlign: 'center',
-        height: 40
+        height: 40,
+        marginTop: 5
     },
 });
 NewSystemScreen.contextType = UserContext;

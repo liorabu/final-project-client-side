@@ -39,18 +39,21 @@ class SystemScreen extends React.Component {
     // const title=route.params.item.name;
     render() {
         return (
-            // this.state.system.riskLevel == "בתהליך" ?
-            <View style={styles.container} >
-                <SystemDetails system={this.state.system} />
-                    <Option text='חישוב רמת חשיפה' onPress={() => { this.props.navigation.navigate('Question', { questionType: 'exposure' }) }} />
-                        <Option text='חישוב רמת נזק' onPress={() => { this.props.navigation.navigate('Question', { questionType: 'damage' }) }} />
+            this.state.system.riskLevel == "בתהליך" ?
+                <View style={styles.container} >
+                    <SystemDetails system={this.state.system} />
+                    <Option text='שאלות רמת חשיפה' onPress={() => { this.props.navigation.navigate('Question', { questionType: 'exposure' }) }} />
+                    <Option text='שאלות רמת נזק' onPress={() => { this.props.navigation.navigate('Question', { questionType: 'damage' }) }} />
 
-            {/* </View>
+                    </View>
             :
-            <View style={styles.container} > */}
-                {/* <SystemDetails system={this.state.system} /> */}
-                    <Option text='בקרות' onPress={() => {this.props.navigation.navigate('Control') }} />
-            </View>
+            <View style={styles.container} >
+                    <SystemDetails system={this.state.system} />
+                    <Option text='שאלות רמת חשיפה' onPress={() => { this.props.navigation.navigate('Question', { questionType: 'exposure' }) }} />
+                    <Option text='שאלות רמת נזק' onPress={() => { this.props.navigation.navigate('Question', { questionType: 'damage' }) }} />
+                    <Option text='בקרות' onPress={() => { this.props.navigation.navigate('Control',{riskLevel:this.state.system.riskLevel}) }} />
+
+                </View>
         )
     }
 }

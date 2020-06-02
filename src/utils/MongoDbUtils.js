@@ -27,9 +27,10 @@ export async function login(userNumber, userPassword) {
   const db = mongoClient.db("CyberDefence");
   const users = db.collection("users");
 
-  // console.log("search for user");
   return await users.findOne({ number: parseInt(userNumber), password: userPassword });
 }
+
+//load the systems of the user
 export async function getSystems(userId) {
   // await loadClient();
   const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
@@ -40,6 +41,7 @@ export async function getSystems(userId) {
   return await data.toArray();
 }
 
+//load the risks for the systems
 export async function getMaxRist() {
   // await loadClient();
   const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
@@ -50,6 +52,7 @@ export async function getMaxRist() {
   return await data.toArray();
 }
 
+//save new system
 export async function saveSystem(userId, name, materialsNames, maxRisk, status, RiskLevel) {
   const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
   const db = mongoClient.db("CyberDefence");
@@ -63,7 +66,7 @@ export async function saveSystem(userId, name, materialsNames, maxRisk, status, 
   });
 }
 
-
+//load some system data 
 export async function getSystem(systemId) {
   const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
   const db = mongoClient.db("CyberDefence");
@@ -71,6 +74,7 @@ export async function getSystem(systemId) {
   return await systems.findOne({ _id: systemId });
 }
 
+//load the exposure questions
 export async function getExposureQuestions() {
   const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
   const db = mongoClient.db("CyberDefence");
@@ -79,6 +83,7 @@ export async function getExposureQuestions() {
   return await data.toArray();
 }
 
+//load the damage questions
 export async function getDamageQuestions() {
   const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
   const db = mongoClient.db("CyberDefence");
@@ -87,30 +92,34 @@ export async function getDamageQuestions() {
   return await data.toArray();
 }
 
+//save answers for exposure questions of some system
 export async function saveExposureAnswers(userId, systemId, questionNumber, answerId) {
   const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
   const db = mongoClient.db("CyberDefence");
   const answer = db.collection("ExposureAnswers");
   //  answer.insertOne({ userId: userId, systemId: systemId, questionNumber: questionNumber, answerId: answerId });
   return await answer.updateOne(
-    { systemId: systemId,questionNumber: questionNumber },
+    { systemId: systemId, questionNumber: questionNumber },
     { userId: userId, systemId: systemId, questionNumber: questionNumber, answerId: answerId },
     { upsert: true }
   );
 }
 
+//save expsure level of a system 
 export async function saveExposureLevel(systemId, exposureLevel) {
   const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
   const db = mongoClient.db("CyberDefence");
   const systems = db.collection("Systems");
 
-  return await systems.updateOne({
+  await systems.updateOne({
     _id: systemId,
   }, {
     $set: { exposureLevel: exposureLevel },
   })
   return calculateRiskLevel(systemId);
 }
+
+//save damage level of a system 
 export async function saveDamageLevel(systemId, damageLevel) {
   const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
   const db = mongoClient.db("CyberDefence");
@@ -124,19 +133,20 @@ export async function saveDamageLevel(systemId, damageLevel) {
   return calculateRiskLevel(systemId);
 }
 
+//save answers for damage questions of some system
 export async function saveDamageAnswers(userId, systemId, questionNumber, answerId) {
   const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
   const db = mongoClient.db("CyberDefence");
   const answer = db.collection("DamageAnswers");
   return await answer.updateOne(
-    { systemId: systemId,questionNumber: questionNumber },
+    { systemId: systemId, questionNumber: questionNumber },
     { userId: userId, systemId: systemId, questionNumber: questionNumber, answerId: answerId },
     { upsert: true }
   );
 }
 
+//calculate & save the risk level of a system
 export async function calculateRiskLevel(systemId) {
-
   let system = await getSystem(systemId);
   if (system.damageLevel && system.exposureLevel) {
     let riskLevel = Math.round(system.exposureLevel + 3 * system.damageLevel);
@@ -157,40 +167,170 @@ export async function calculateRiskLevel(systemId) {
     const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
     const db = mongoClient.db("CyberDefence");
     const systems = db.collection("Systems");
-    let status="ביצוע בקרות";
+    let status = "ביצוע בקרות";
+    let controls = await getControls(riskLevel);
+
+    let controlsNumber = controls.length;
     return await systems.updateOne({
       _id: systemId,
     }, {
-      $set: { riskLevel: riskLevel ,
-        status:status},
+      $set: {
+        riskLevel: riskLevel,
+        status: status,
+        controlsNumber: controlsNumber
+      },
     })
   }
 }
 
+//delete a system
 export async function deleteSystem(systemId) {
   const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
   const db = mongoClient.db("CyberDefence");
   const systems = db.collection("Systems");
 
-  return await systems.deleteOne({_id:systemId});
+  return await systems.deleteOne({ _id: systemId });
+}
+
+//load exist answers of a system
+export async function getAnswers(systemId, questionsType) {
+  const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
+  const db = mongoClient.db("CyberDefence");
+  if (questionsType == "exposure") {
+    const answers = db.collection("ExposureAnswers");
+    const data = await answers.find({ systemId: systemId });
+    return await data.toArray();
+  }
+  else if (questionsType == "damage") {
+    const answers = db.collection("DamageAnswers");
+
+    const data = await answers.find({ systemId: systemId });
+    return await data.toArray();
+  }
+}
+
+//load the controls for some risk level
+export async function getControls(riskLevel) {
+  const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
+  const db = mongoClient.db("CyberDefence");
+  const controls = db.collection("Controls");
+  const data = await controls.find({ riskLevel: riskLevel });
+
+  return await data.toArray();
+}
+
+//load the controls of some system
+export async function getPerformedControls(systemId) {
+  const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
+  const db = mongoClient.db("CyberDefence");
+  const controls = db.collection("PerformedControls");
+  const data = await controls.find({ systemId: systemId });
+  return await data.toArray();
+}
+
+export async function savePerformedControl(userId, systemId, controlId, subclauseNmber) {
+  const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
+  const db = mongoClient.db("CyberDefence");
+  const controls = db.collection("PerformedControls");
+
+
+  return await controls.insertOne({
+    userId: userId,
+    systemId: systemId,
+    controlId: controlId,
+    subclauseNmber: subclauseNmber,
+  });
+}
+
+export async function deletePerformedControl(systemId, subclauseNmber) {
+  const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
+  const db = mongoClient.db("CyberDefence");
+  const controls = db.collection("PerformedControls");
+  return await controls.deleteOne({ systemId: systemId, subclauseNmber: subclauseNmber });
+}
+
+export async function setStatusToFinish(systemId) {
+  const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
+  const db = mongoClient.db("CyberDefence");
+  const systems = db.collection("Systems");
+  let status = "סיום";
+  return await systems.updateOne({
+    _id: systemId,
+  }, {
+    $set: { status: status },
+  })
+}
+export async function setStatusToControls(systemId) {
+  const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
+  const db = mongoClient.db("CyberDefence");
+  const systems = db.collection("Systems");
+  let status = "ביצוע בקרות";
+  return await systems.updateOne({
+    _id: systemId,
+  }, {
+    $set: { status: status },
+  })
 }
 
 
-export async function getAnswers(systemId,questionsType){
+export async function getDashboardData(userId) {
   const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
   const db = mongoClient.db("CyberDefence");
-  if(questionsType=="exposure"){
-    const answers = db.collection("ExposureAnswers");
-    const data = await answers.find({systemId:systemId});
-  return await data.toArray();
+  const systems = db.collection("Systems");
+  const controls = db.collection("Controls");
+  const performed = db.collection("PerformedControls");
+  let status = "סיום";
+  let userSystems = await systems.find({ userId: userId }).toArray()
+  let userControls = 0;
+  let doneSystems = await systems.find({ userId: userId, status: status })
+  let performedControls = await performed.find({ userId: userId })
+
+  for (let system of await userSystems) {
+    {
+      !!system.controlsNumber ?
+        userControls = userControls + system.controlsNumber
+        :
+        null
+    }
   }
-  else if(questionsType=="damage"){
-    const answers = db.collection("DamageAnswers");
-   
-    const data = await answers.find({systemId:systemId});
+  let results = { userSystems: await userSystems, doneSystems: await doneSystems.toArray(), performedControls: await performedControls.toArray(), userControls: userControls }
+  return await results
+}
+
+//load the update controls of some system
+export async function getUpdateControls(systemId) {
+  const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
+  const db = mongoClient.db("CyberDefence");
+  const controls = db.collection("updateControls");
+  const data = await controls.find({ systemId: systemId });
   return await data.toArray();
-  }
-  
+}
+
+export async function updateControl(userId, systemId, subclauseNmber, updateControl) {
+  const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
+  const db = mongoClient.db("CyberDefence");
+  const controls = db.collection("updateControls");
+  const exist = await controls.findOne({
+    systemId: systemId,
+    subclauseNmber: subclauseNmber
+  });
+  if (exist)
+    return await controls.updateOne({
+      systemId: systemId,
+      subclauseNmber: subclauseNmber
+    }, {
+      $set: { updateControl: updateControl },
+    })
+    else{
+      return await controls.insertOne({
+        userId:userId,
+        systemId: systemId,
+        subclauseNmber: subclauseNmber,
+        updateControl: updateControl
+      })
+
+    }
+
 }
 
 

@@ -50,11 +50,9 @@ const styles = StyleSheet.create({
     buttonText: {
         color: 'white',
         textAlign: 'center',
-        top:4,
         fontSize:20,
         flexDirection:'column',
         alignSelf:'center',
-       textAlign:'center',
-     top:'8%'
+        justifyContent:'center',
     }
 });

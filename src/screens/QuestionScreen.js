@@ -4,7 +4,8 @@ import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from 'reac
 import Answer from '../components/Answer';
 import MainButton from '../components/MainButton';
 import { getExposureQuestions, saveExposureAnswers, saveExposureLevel, getDamageQuestions, saveDamageAnswers, saveDamageLevel, getAnswers, loadClient } from '../utils/MongoDbUtils';
-import { UserContext } from '../contexts/UserContext'
+import { UserContext } from '../contexts/UserContext';
+
 
 class QuestionScreen extends React.Component {
     constructor(props) {
@@ -39,6 +40,7 @@ class QuestionScreen extends React.Component {
             }).catch(error => {
                 console.log('fail', error);
             });
+
         }
 
         else if (this.props.route.params.questionType == 'damage') {
@@ -53,12 +55,13 @@ class QuestionScreen extends React.Component {
                 }
                 this.setState({
                     questions: result,
-                    // answers: []
                 });
             }).catch(error => {
                 console.log('fail', error);
             });
+
         }
+
     }
 
     // get the answers of the system for show them
@@ -105,14 +108,12 @@ class QuestionScreen extends React.Component {
                 answers: newAnswers
             }
         });
-       
+
         if (this.state.answers.length == this.state.questions.length) {
-            console.log("gfdgfd")
             if (this.props.route.params.questionType == 'exposure') {
                 this.calculateExposureLevel();
             }
             else if (this.props.route.params.questionType == 'damage') {
-                
                 this.calculateDamageLevel();
             }
         }
@@ -132,7 +133,7 @@ class QuestionScreen extends React.Component {
         }
         else if (this.props.route.params.questionType == 'damage') {
             saveDamageAnswers(this.context.userId, this.context.systemId, questionNumber, answerId).then(result => {
-                
+
                 if (!result) {
                     Alert.alert('', 'שמירת התשובה נכשלה, אנא נסה שוב', [{ text: 'אישור' }])
                 }
@@ -147,12 +148,12 @@ class QuestionScreen extends React.Component {
         let exposureLevel = 0;
         const answersNumbers = this.state.answers;
         for (let i = 0; i < answersNumbers.length; i++) {
-            
+
             exposureLevel += answersNumbers[i].answerId;
         }
-       
+
         exposureLevel = exposureLevel / (answersNumbers.length + 1);
-    
+
         saveExposureLevel(this.context.systemId, exposureLevel).then(result => {
             if (!result) {
                 Alert.alert('', 'לא בוצע חישוב רמת חשיפה', [{ text: 'אישור' }])
@@ -213,15 +214,11 @@ class QuestionScreen extends React.Component {
                         showAnswers.map((item, index) => {
 
                             return (
-
-                                <Answer
-                                    key={item.key}
-                                    text={item.text}
-                                    selected={index == this.state.currentAnswer}
-                                    onPress={() => { this.setState({ currentAnswer: index }) }} />
-
-
-
+                                    <Answer
+                                        key={item.key}
+                                        text={item.text}
+                                        selected={index == this.state.currentAnswer}
+                                        onPress={() => { this.setState({ currentAnswer: index }) }} />
                             )
                         })
                     }
@@ -265,22 +262,22 @@ class QuestionScreen extends React.Component {
                             )
                     }
 
-{this.state.currentQuestion>1?
-                    <TouchableOpacity style={styles.previousTouchable} onPress={() => this.setState((prevState) => {
-                        const newQuestionId = prevState.currentQuestion - 1;
-                        const existsAnswer = prevState.answers.find((item) => item.questionNumber == newQuestionId)
+                    {this.state.currentQuestion > 1 ?
+                        <TouchableOpacity style={styles.previousTouchable} onPress={() => this.setState((prevState) => {
+                            const newQuestionId = prevState.currentQuestion - 1;
+                            const existsAnswer = prevState.answers.find((item) => item.questionNumber == newQuestionId)
 
-                        return {
-                            currentQuestion: newQuestionId,
-                            currentAnswer: (!existsAnswer) ? null : existsAnswer.answerId - 1
-                        };
-                    })}
-                    >
-                        <Text style={styles.previousText}>לשאלה הקודמת</Text>
-                    </TouchableOpacity>
-                    :
-                    null
-}
+                            return {
+                                currentQuestion: newQuestionId,
+                                currentAnswer: (!existsAnswer) ? null : existsAnswer.answerId - 1
+                            };
+                        })}
+                        >
+                            <Text style={styles.previousText}>לשאלה הקודמת</Text>
+                        </TouchableOpacity>
+                        :
+                        null
+                    }
 
 
 
@@ -336,7 +333,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff'
     },
     previousTouchable: {
-        // bottom: 75,
         alignSelf: 'center',
         color: 'blue'
     },
