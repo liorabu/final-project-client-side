@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, Button, TouchableOpacity, FlatList, Alert, ScrollView } from 'react-native';
-import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from 'react-native-simple-radio-button';
 import Answer from '../components/Answer';
 import MainButton from '../components/MainButton';
 import { getExposureQuestions, saveExposureAnswers, saveExposureLevel, getDamageQuestions, saveDamageAnswers, saveDamageLevel, getAnswers, loadClient } from '../utils/MongoDbUtils';
 import { UserContext } from '../contexts/UserContext';
-
+import { Modal } from 'react-native';
 
 class QuestionScreen extends React.Component {
     constructor(props) {
@@ -17,7 +16,8 @@ class QuestionScreen extends React.Component {
             currentAnswer: null,
             buttonHeight: '8%',
             questionMargin: '20%',
-            ButtonTopMargin: '20%'
+            ButtonTopMargin: '20%',
+            descriptionModal: true,
         }
     }
 
@@ -35,7 +35,6 @@ class QuestionScreen extends React.Component {
                 }
                 this.setState({
                     questions: result,
-                    // answers: []
                 });
             }).catch(error => {
                 console.log('fail', error);
@@ -180,6 +179,11 @@ class QuestionScreen extends React.Component {
             console.log('fail', error);
         });
     }
+    onCloseDescription = () => {
+        this.setState({
+            descriptionModal: false,
+        });
+    }
 
     render() {
         if (this.state.questions.length <= 0) {
@@ -214,11 +218,11 @@ class QuestionScreen extends React.Component {
                         showAnswers.map((item, index) => {
 
                             return (
-                                    <Answer
-                                        key={item.key}
-                                        text={item.text}
-                                        selected={index == this.state.currentAnswer}
-                                        onPress={() => { this.setState({ currentAnswer: index }) }} />
+                                <Answer
+                                    key={item.key}
+                                    text={item.text}
+                                    selected={index == this.state.currentAnswer}
+                                    onPress={() => { this.setState({ currentAnswer: index }) }} />
                             )
                         })
                     }
@@ -279,11 +283,29 @@ class QuestionScreen extends React.Component {
                         null
                     }
 
-
+                    <Modal
+                        onRequestClose={this.onCloseDescription}
+                        visible={this.state.descriptionModal} >
+                        <View style={styles.outerStyle}>
+                            <View style={styles.inner}>
+                                <Text style={styles.modalText}>בחלון זה מוצגות שאלות לצורך חישוב רמת הסיכון של המערכת.</Text>
+                                {this.props.route.params.questionType == 'damage' ?
+                                    <Text style={styles.modalText}>השאלות בדף זה קשורות למערכת הנוכחית בלבד ולאחר סיום המענה, יבוצע חישוב רמת הנזק לצורך חישוב רמת הסיכון.</Text>
+                                    :
+                                    <Text style={styles.modalText}>השאלות בדף זה קשורות למערכת הנוכחית בלבד ולאחר סיום המענה, יבוצע חישוב רמת החשיפה לצורך חישוב רמת הסיכון.</Text>
+                                }
+                                <Text style={[{marginTop:10},styles.modalText]}>במידה ולמערכת מוגדרת רמת סיכון, מענה מחדש על השאלות עלול לעדכן אותה ולשנות את הבקרות בהתאם.</Text>
+                                <TouchableOpacity onPress={this.onCloseDescription}>
+                                    <Text style={styles.closeButton}>סגירה</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </Modal>
 
                 </View >
             </ScrollView>
         );
+
     }
 
 }
@@ -339,7 +361,32 @@ const styles = StyleSheet.create({
     previousText:
     {
         color: '#169BD5'
-    }
+    },
+    outerStyle: {
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'rgba(0,0,0,0.1)',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+
+    inner: {
+        backgroundColor: 'white',
+        paddingHorizontal: '5%',
+        paddingVertical: '2%',
+        width: '100%',
+        borderColor: 'black',
+        borderWidth: 1
+    },
+    modalText: {
+        alignSelf: 'flex-start',
+        fontSize: 16
+    },
+
+    closeButton: {
+        color: '#169BD5',
+        paddingTop: '3%'
+    },
 });
 
 QuestionScreen.contextType = UserContext;
