@@ -40,14 +40,14 @@ class SystemScreen extends React.Component {
                     <SystemDetails system={this.state.system} />
                     <Option text='שאלות רמת חשיפה' onPress={() => { this.props.navigation.navigate('Question', { questionType: 'exposure' }) }} />
                     <Option text='שאלות רמת נזק' onPress={() => { this.props.navigation.navigate('Question', { questionType: 'damage' }) }} />
-
-                    </View>
-            :
-            <View style={styles.container} >
+                    <Option text='בקרות'  disable='true'/>
+                </View>
+                :
+                <View style={styles.container} >
                     <SystemDetails system={this.state.system} />
                     <Option text='שאלות רמת חשיפה' onPress={() => { this.props.navigation.navigate('Question', { questionType: 'exposure' }) }} />
                     <Option text='שאלות רמת נזק' onPress={() => { this.props.navigation.navigate('Question', { questionType: 'damage' }) }} />
-                    <Option text='בקרות' onPress={() => { this.props.navigation.navigate('Control',{riskLevel:this.state.system.riskLevel}) }} />
+                    <Option text='בקרות' onPress={() => { this.props.navigation.navigate('Control', { riskLevel: this.state.system.riskLevel }) }} />
 
                 </View>
         )
