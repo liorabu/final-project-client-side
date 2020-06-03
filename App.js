@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { StyleSheet, SafeAreaView } from 'react-native';
 import QuestionScreen from './src/screens/QuestionScreen';
+import UserDetailsScreen from './src/screens/UserDetailsScreen';
 import HomeScreen from './src/screens/HomeScreen';
 import SystemsScreen from './src/screens/SystemsScreen';
 import ControlScreen from './src/screens/ControlScreen';
@@ -13,6 +14,7 @@ import NewSystemScreen from './src/screens/NewSystemScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import {UserContext} from './src/contexts/UserContext';
 import { createSwitchNavigator } from 'react-navigation';
+
 
 const Stack = createStackNavigator();
 
@@ -30,6 +32,7 @@ const [systemId, setSystemId] =React.useState(0);
           <Stack.Navigator >
             <Stack.Screen name="Login" component={LoginScreen}  options={{headerShown: false}}/>
             <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'חומר אפל', headerTitleAlign: 'center', headerTintColor: '#fff', headerStyle: { backgroundColor: '#027DB4' } }} />
+            <Stack.Screen name="UserDetails" component={UserDetailsScreen} />
             <Stack.Screen name="Question" component={QuestionScreen} />
             <Stack.Screen name="Systems" component={SystemsScreen} options={{ title: 'מערכות קיימות', headerTitleAlign: 'center', headerTintColor: '#fff', headerStyle: { backgroundColor: '#027DB4' } }} />
             <Stack.Screen name="Control" component={ControlScreen} />

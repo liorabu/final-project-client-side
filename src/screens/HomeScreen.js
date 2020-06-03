@@ -17,7 +17,6 @@ class HomeScreen extends React.Component {
 
   componentDidMount() {
     this.loadSashboardData();  
-
   }
 
   loadSashboardData = () => {
@@ -43,6 +42,7 @@ class HomeScreen extends React.Component {
         <View>
           <Option text='מערכות שהוזנו' onPress={() => { this.props.navigation.navigate('Systems') }} />
           <Option text='הזנת מערכת' onPress={() => { this.props.navigation.navigate('NewSystem') }} />
+          <Option text='פרטים אישיים' onPress={() => { this.props.navigation.navigate('UserDetails') }} />
           <Option text='צור קשר' />
         </View>
 
@@ -68,7 +68,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 20,
     justifyContent: 'space-evenly'
-
   },
   dashboard: {
     borderWidth: 1,

@@ -33,10 +33,6 @@ class SystemScreen extends React.Component {
             console.log('fail', error);
         });
     }
-
-    // const { route } = props;
-    // const system=route.params.item;
-    // const title=route.params.item.name;
     render() {
         return (
             this.state.system.riskLevel == "בתהליך" ?

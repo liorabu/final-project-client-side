@@ -132,7 +132,6 @@ class ControlScreen extends React.Component {
             showUpdateControl: true,
             updateItem: selectedItem
         });
-        // console.log(selectedItem)
         this.getValue(selectedItem)
     }
 

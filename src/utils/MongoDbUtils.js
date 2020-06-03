@@ -26,6 +26,7 @@ export async function login(userNumber, userPassword) {
   const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
   const db = mongoClient.db("CyberDefence");
   const users = db.collection("users");
+  // const user=await users.findOne({ number: parseInt(userNumber), password: userPassword });
 
   return await users.findOne({ number: parseInt(userNumber), password: userPassword });
 }
@@ -97,7 +98,7 @@ export async function saveExposureAnswers(userId, systemId, questionNumber, answ
   const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
   const db = mongoClient.db("CyberDefence");
   const answer = db.collection("ExposureAnswers");
-  //  answer.insertOne({ userId: userId, systemId: systemId, questionNumber: questionNumber, answerId: answerId });
+
   return await answer.updateOne(
     { systemId: systemId, questionNumber: questionNumber },
     { userId: userId, systemId: systemId, questionNumber: questionNumber, answerId: answerId },
@@ -321,18 +322,42 @@ export async function updateControl(userId, systemId, subclauseNmber, updateCont
     }, {
       $set: { updateControl: updateControl },
     })
-    else{
-      return await controls.insertOne({
-        userId:userId,
-        systemId: systemId,
-        subclauseNmber: subclauseNmber,
-        updateControl: updateControl
-      })
+  else {
+    return await controls.insertOne({
+      userId: userId,
+      systemId: systemId,
+      subclauseNmber: subclauseNmber,
+      updateControl: updateControl
+    })
 
-    }
-
+  }
 }
 
+export async function getUserDetails(userId) {
+  const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
+  const db = mongoClient.db("CyberDefence");
+  const users = db.collection("users");
+
+  return await users.findOne({ _id: userId });
+}
+
+export async function saveUserData(userId, beginningDate, contactEmail,
+  contactPerson, contactPhone) {
+  const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
+  const db = mongoClient.db("CyberDefence");
+  const users = db.collection("users");
+  return await users.updateOne({
+    _id: userId,
+  }, {
+    $set: {
+      beginningDate: beginningDate,
+      contactEmail: contactEmail,
+      contactPerson: contactPerson,
+      contactPhone: contactPhone
+    },
+  })
+
+}
 
 
 

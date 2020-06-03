@@ -4,7 +4,6 @@ import MainButton from '../components/MainButton';
 import { saveSystem, getMaxRist } from '../utils/MongoDbUtils';
 import { UserContext } from '../contexts/UserContext'
 import { Picker } from '@react-native-community/picker'
-import CheckBox from '@react-native-community/checkbox';
 
 class NewSystemScreen extends React.Component {
     constructor(props) {
@@ -106,22 +105,6 @@ class NewSystemScreen extends React.Component {
                         }
                     </Picker>
                 </View>
-                {/* <CheckBox
-    disabled={false}
-    value={this.state.toggleCheckBox}
-    onValueChange={() =>  this.setToggleCheckBox() }
-  /> */}
-
-                {/* <Dropdown
-                    onChangeText={(text) => this.setState({ maxRisk: text })}
-                    style={styles.dropDown}
-                    label="סיכון מקסימלי"
-                    data={this.state.risks}
-                    valueExtractor={(item) => item.risk}
-                    lineWidth={0}
-                    activeLineWidth={0}
-                    disabledLineWidth={0}
-                /> */}
                 <MainButton
                     title="הוספת המערכת"
                     onPress={this.saveMySystem}
