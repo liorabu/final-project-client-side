@@ -213,7 +213,19 @@ class QuestionScreen extends React.Component {
                         </View>
                         <Text style={styles.questionText}>{showQuestion.body}</Text>
                     </View>
-                    {
+                    {this.props.route.params.questionType == 'damage' ?
+                        showAnswers.map((item, index) => {
+
+                            return (
+                                <Answer
+                                    key={item.key}
+                                    text={item.text}
+                                    selected={index == this.state.currentAnswer}
+                                    onPress={() => { this.setState({ currentAnswer: index }) }} />
+                            )
+                            }) 
+                        :
+
 
                         showAnswers.map((item, index) => {
 
@@ -225,6 +237,7 @@ class QuestionScreen extends React.Component {
                                     onPress={() => { this.setState({ currentAnswer: index }) }} />
                             )
                         })
+
                     }
                     {
                         this.state.currentQuestion < this.state.questions.length ?
@@ -294,7 +307,7 @@ class QuestionScreen extends React.Component {
                                     :
                                     <Text style={styles.modalText}>השאלות בדף זה קשורות למערכת הנוכחית בלבד ולאחר סיום המענה, יבוצע חישוב רמת החשיפה לצורך חישוב רמת הסיכון.</Text>
                                 }
-                                <Text style={[{marginTop:10},styles.modalText]}>במידה ולמערכת מוגדרת רמת סיכון, מענה מחדש על השאלות עלול לעדכן אותה ולשנות את הבקרות בהתאם.</Text>
+                                <Text style={[{ marginTop: 10 }, styles.modalText]}>במידה ולמערכת מוגדרת רמת סיכון, מענה מחדש על השאלות עלול לעדכן אותה ולשנות את הבקרות בהתאם.</Text>
                                 <TouchableOpacity onPress={this.onCloseDescription}>
                                     <Text style={styles.closeButton}>סגירה</Text>
                                 </TouchableOpacity>

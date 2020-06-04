@@ -2,7 +2,6 @@ import React from 'react';
 import { Text, StyleSheet, View, Button, TouchableOpacity, ScrollView, TextInput } from 'react-native';
 import { UserContext } from '../contexts/UserContext';
 import { getUserDetails, saveUserData } from '../utils/MongoDbUtils';
-import DatePicker from 'react-native-datepicker';
 import MainButton from '../components/MainButton';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
@@ -93,7 +92,6 @@ class UserDetailsScreen extends React.Component {
 
         return (
             <View style={styles.container}>
-                {/* <Text style={styles.titleStyle}>פרטים אישיים</Text> */}
                 <View style={styles.dataGroup}>
                     <Text style={styles.title}>שם המפעל</Text >
                     <Text style={styles.dataStyle}>{this.state.name}</Text>

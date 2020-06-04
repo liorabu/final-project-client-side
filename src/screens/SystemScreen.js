@@ -15,7 +15,6 @@ class SystemScreen extends React.Component {
         }
     }
     componentDidMount() {
-
         this.loadThisSystem();
     }
 
