@@ -29,7 +29,7 @@ class UserDetailsScreen extends React.Component {
 
     componentDidMount() {
         this.loadUserData();
-       
+    
     }
 
     loadUserData = () => {
@@ -87,7 +87,12 @@ class UserDetailsScreen extends React.Component {
 
     render() {
         if (!this.state.wasLoaded) {
-            return <Text>המידע נטען</Text>;
+            return (
+                <View style={styles.loadContainer} >
+                    <Text style={styles.loadDetails}>הנתונים נטענים,</Text>
+                    <Text style={styles.loadDetails}>אנא המתן</Text>
+                </View>
+            )
         }
 
         return (
@@ -204,7 +209,19 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
         fontSize: 15,
         textAlign:'right'
-    }
+    },
+    loadContainer:{
+        flex: 1,
+        paddingHorizontal: 20,
+        justifyContent:'center'
+    },
+    loadDetails: {
+        fontSize: 40,
+        textAlign: 'center',
+        marginBottom: 10,
+        color:"#757575"
+       
+    },
 })
 
 

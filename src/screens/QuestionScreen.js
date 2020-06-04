@@ -329,7 +329,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     loadinQuestions: {
-
         fontSize: 20,
         textAlign: 'center',
         marginBottom: '3%'
