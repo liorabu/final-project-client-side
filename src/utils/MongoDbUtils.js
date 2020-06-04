@@ -26,13 +26,26 @@ export async function login(userNumber, userPassword) {
   const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
   const db = mongoClient.db("CyberDefence");
   const users = db.collection("users");
-  // const user=await users.findOne({ number: parseInt(userNumber), password: userPassword });
+  const user=await users.findOne({ number: parseInt(userNumber), password: userPassword });
 
-  // if(!user.date){
-      // ....mongodb - update
-  // }
+  if(!user.beginningDate){
+    updateUserBeginningDate(user._id);
+  }
 
   return await users.findOne({ number: parseInt(userNumber), password: userPassword });
+}
+
+
+export async function updateUserBeginningDate(userId){
+  const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
+  const db = mongoClient.db("CyberDefence");
+  const users = db.collection("users");
+  const user=await users.findOne({ _id:userId });
+  return await users.updateOne({
+    _id:userId
+  }, {
+    $set: { beginningDate: new Date() },
+  })
 }
 
 //load the systems of the user
