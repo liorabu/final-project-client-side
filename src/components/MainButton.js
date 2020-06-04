@@ -4,7 +4,7 @@ import { Text, TouchableOpacity, StyleSheet } from 'react-native';
 export default MainButton = (props) => {
 
     let buttonWidth = '100%';
-    let buttonmargin = '0%';
+    let buttonmargin = 0;
     let buttonHeight = '8%';
     let buttonMarginTop = '12%';
 
@@ -43,9 +43,7 @@ const styles = StyleSheet.create({
         paddingVertical: '3%',
         borderRadius: 5,
         alignSelf: 'center',
-        // justifyContent: 'center',
         alignItems: 'center'
-
     },
 
     buttonText: {
@@ -54,6 +52,5 @@ const styles = StyleSheet.create({
         fontSize: 20,
         flexDirection: 'column',
         alignSelf: 'center',
-        // justifyContent: 'center',
     }
 });

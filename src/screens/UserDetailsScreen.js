@@ -1,14 +1,19 @@
 import React from 'react';
 import { Text, StyleSheet, View, Button, TouchableOpacity, ScrollView, TextInput } from 'react-native';
 import { UserContext } from '../contexts/UserContext';
-import { getUserDetails,saveUserData } from '../utils/MongoDbUtils';
+import { getUserDetails, saveUserData } from '../utils/MongoDbUtils';
 import DatePicker from 'react-native-datepicker';
 import MainButton from '../components/MainButton';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 
 
 
 class UserDetailsScreen extends React.Component {
+
+    YEARS_FOR_QUESTIONS = 1;
+    YEARS_FOR_CONTROLS = 3;
+
     constructor(props) {
         super(props);
         let dateToday;
@@ -18,12 +23,14 @@ class UserDetailsScreen extends React.Component {
             contactPerson: null,
             contactPhone: null,
             name: null,
+            wasLoaded: false,
+            showDatePicker: false
         }
     }
 
     componentDidMount() {
         this.loadUserData();
-        this.loadDateToday();
+       
     }
 
     loadUserData = () => {
@@ -36,7 +43,8 @@ class UserDetailsScreen extends React.Component {
                 contactEmail: result.contactEmail,
                 contactPerson: result.contactPerson,
                 contactPhone: result.contactPhone,
-                name: result.name
+                name: result.name,
+                wasLoaded: true
             });
         }).catch(error => {
             console.log('fail', error);
@@ -54,27 +62,38 @@ class UserDetailsScreen extends React.Component {
                     if (!result) {
                         Alert.alert('', 'חלה שגיאה בשמירת הנתונים, אנא נסה שוב', [{ text: 'אישור' }])
                     }
-                    else{
+                    else {
                         this.props.navigation.navigate('Home');
-                    }     
+                    }
                 }).catch(error => {
                     console.log('fail', error);
                 });
-            }
+        }
     }
 
-    loadDateToday = () => {
-        let day = new Date().getDate();
-        let month = new Date().getMonth() + 1;
-        let year = new Date().getFullYear();
-        this.dateToday = year + "-" + month + "-" + day;
+    getFutureDate = (date,moreYears) => {
+        let day = date.getDate();
+        let month = date.getMonth() + 1;
+        let year = date.getFullYear()+moreYears;
+        return `${day}/${month}/${year}`;
+    }
+
+    formatDate = (date) => {
+        let day = date.getDate();
+        let month = date.getMonth() + 1;
+        let year = date.getFullYear();
+
+        return `${day}/${month}/${year}`;
     }
 
     render() {
+        if (!this.state.wasLoaded) {
+            return <Text>המידע נטען</Text>;
+        }
 
         return (
             <View style={styles.container}>
-                <Text style={styles.titleStyle}>פרטים אישיים</Text>
+                {/* <Text style={styles.titleStyle}>פרטים אישיים</Text> */}
                 <View style={styles.dataGroup}>
                     <Text style={styles.title}>שם המפעל</Text >
                     <Text style={styles.dataStyle}>{this.state.name}</Text>
@@ -115,40 +134,40 @@ class UserDetailsScreen extends React.Component {
 
                 <View style={styles.dataGroup}>
                     <Text style={styles.title}>תאריך תחילת התהליך</Text >
-                    <DatePicker
-                        style={{ width: 200 }}
-                        date={this.state.date}
-                        mode="date"
-                        placeholder="select date"
-                        format="DD/MM/YYYY"
-                        // minDate="2016-05-01"
-                        // maxDate="2020-06-03"
-                        // maxDate={this.dateToday}
-                        confirmBtnText="Confirm"
-                        cancelBtnText="Cancel"
-                        value={this.state.beginningDate}
-                        customStyles={{
-                            dateIcon: {
-                                position: 'absolute',
-                                left: 0,
-                                top: 4,
-                                marginLeft: 0
-                            },
-                            dateInput: {
-                                marginLeft: 36
-                            }
-                        }}
-                        onDateChange={(date) => { this.setState({ beginningDate: date }) }}
-                    />
+                    <TouchableOpacity  style={styles.inputStyle} onPress={() => this.setState({ showDatePicker: true })}>
+                        <Text style={{textAlign:'left'}}>{this.formatDate(this.state.beginningDate)}</Text>
+                    </TouchableOpacity>
+                    {!!this.state.showDatePicker &&
+                        <DateTimePicker
+                            value={this.state.beginningDate}
+                            mode="date"
+                            display="default"
+                            onChange={(event, selectedDate) => {
+                                if (selectedDate) {
+                                    this.setState({
+                                        beginningDate: selectedDate,
+                                        showDatePicker:false
+                                    })
+                                }
+                            }}
+                        />
+                    }
                 </View>
 
+                <View style={styles.dataGroup}>
+                    <Text style={styles.title}>תאריך סיום שלב ראשוני</Text >
+                    <Text style={styles.dataStyle}>{this.getFutureDate(this.state.beginningDate,this.YEARS_FOR_QUESTIONS)}</Text>
+                </View>
+
+                <View style={styles.dataGroup}>
+                    <Text style={styles.title}>תאריך סיום ביצוע הבקרות</Text >
+                    <Text style={styles.dataStyle}>{this.getFutureDate(this.state.beginningDate,this.YEARS_FOR_CONTROLS)}</Text>
+                </View>
                 <MainButton
                     title="עדכון פרטים"
                     onPress={this.saveMyData}
-                    width="65%" margin="20%" height="8%"
+                    width="65%" 
                 />
-
-
             </View>
         )
     }
@@ -177,9 +196,6 @@ const styles = StyleSheet.create({
     dataStyle: {
         marginTop: 5,
         fontSize: 16,
-
-        // paddingHorizontal: 10,
-        // paddingVertical:5,
     },
     inputStyle: {
         borderColor: '#169BD5',
@@ -189,8 +205,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         paddingVertical: 5,
         fontSize: 15,
-        // marginBottom: '2%'
-        textAlign: 'right'
+        textAlign:'right'
     }
 })
 

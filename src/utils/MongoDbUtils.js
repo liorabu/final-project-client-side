@@ -28,6 +28,10 @@ export async function login(userNumber, userPassword) {
   const users = db.collection("users");
   // const user=await users.findOne({ number: parseInt(userNumber), password: userPassword });
 
+  // if(!user.date){
+      // ....mongodb - update
+  // }
+
   return await users.findOne({ number: parseInt(userNumber), password: userPassword });
 }
 
@@ -54,16 +58,21 @@ export async function getMaxRist() {
 }
 
 //save new system
-export async function saveSystem(userId, name, materialsNames, maxRisk, status, RiskLevel) {
+export async function saveSystem(userId, name, materialsNames, maxRisk, status, riskLevel) {
   const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
   const db = mongoClient.db("CyberDefence");
   const systems = db.collection("Systems");
+  let controls = await getControls(riskLevel);
+
+    let controlsNumber = controls.length;
+    // console.log()
   return await systems.insertOne({
     userId: userId,
     name: name, status: status,
     materials: materialsNames,
-    riskLevel: RiskLevel,
-    maxRisk: maxRisk
+    riskLevel: riskLevel,
+    maxRisk: maxRisk,
+    controlsNumber: controlsNumber
   });
 }
 

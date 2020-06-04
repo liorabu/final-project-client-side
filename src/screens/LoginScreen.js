@@ -27,7 +27,7 @@ class LoginScreen extends React.Component {
                         return;
                     }
 
-                    console.log('login success', result);
+                    // console.log('login success', result);
                     this.context.setUserId(result._id);
                     this.props.navigation.navigate('Home');
                 })
