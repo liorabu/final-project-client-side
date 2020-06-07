@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, StyleSheet, View, Button, TouchableOpacity, ScrollView, TextInput } from 'react-native';
+import { Text, StyleSheet, View, Button, TouchableOpacity, TextInput, ScrollView, KeyboardAvoidingView, Platform, StatusBar } from 'react-native';
 import { UserContext } from '../contexts/UserContext';
 import { getUserDetails, saveUserData } from '../utils/MongoDbUtils';
 import MainButton from '../components/MainButton';
@@ -29,7 +29,7 @@ class UserDetailsScreen extends React.Component {
 
     componentDidMount() {
         this.loadUserData();
-    
+
     }
 
     loadUserData = () => {
@@ -70,10 +70,10 @@ class UserDetailsScreen extends React.Component {
         }
     }
 
-    getFutureDate = (date,moreYears) => {
+    getFutureDate = (date, moreYears) => {
         let day = date.getDate();
         let month = date.getMonth() + 1;
-        let year = date.getFullYear()+moreYears;
+        let year = date.getFullYear() + moreYears;
         return `${day}/${month}/${year}`;
     }
 
@@ -96,91 +96,101 @@ class UserDetailsScreen extends React.Component {
         }
 
         return (
-            <View style={styles.container}>
-                <View style={styles.dataGroup}>
-                    <Text style={styles.title}>שם המפעל</Text >
-                    <Text style={styles.dataStyle}>{this.state.name}</Text>
-                </View>
+            <KeyboardAvoidingView behavior={null} style={{ flex: 1, justifyContent: 'space-evenly' }}>
+                <ScrollView style={styles.scrollViewContainer} contentContainerStyle={styles.container} >
+                    <View style={styles.dataGroup}>
+                        <Text style={styles.title}>שם המפעל</Text >
+                        <Text style={styles.dataStyle}>{this.state.name}</Text>
+                    </View>
 
-                <View style={styles.dataGroup}>
-                    <Text style={styles.title}>איש קשר</Text >
-                    <TextInput style={styles.inputStyle}
-                        onChangeText={(text) => this.setState({ contactPerson: text })}
-                        returnKeyType='go'
-                        autoCapitalize="none"
-                        autoCorrect={false}
-                        value={this.state.contactPerson}
-                    />
-                </View>
-
-                <View style={styles.dataGroup}>
-                    <Text style={styles.title}>טלפון ליצירת קשר</Text >
-                    <TextInput style={styles.inputStyle}
-                        onChangeText={(text) => this.setState({ contactPhone: text })}
-                        returnKeyType='go'
-                        autoCapitalize="none"
-                        autoCorrect={false}
-                        value={this.state.contactPhone}
-                    />
-                </View>
-
-                <View style={styles.dataGroup}>
-                    <Text style={styles.title}>מייל ליצירת קשר</Text >
-                    <TextInput style={styles.inputStyle}
-                        onChangeText={(text) => this.setState({ contactEmail: text })}
-                        returnKeyType='go'
-                        autoCapitalize="none"
-                        autoCorrect={false}
-                        value={this.state.contactEmail}
-                    />
-                </View>
-
-                <View style={styles.dataGroup}>
-                    <Text style={styles.title}>תאריך תחילת התהליך</Text >
-                    <TouchableOpacity  style={styles.inputStyle} onPress={() => this.setState({ showDatePicker: true })}>
-                        <Text style={{textAlign:'left'}}>{this.formatDate(this.state.beginningDate)}</Text>
-                    </TouchableOpacity>
-                    {!!this.state.showDatePicker &&
-                        <DateTimePicker
-                            value={this.state.beginningDate}
-                            mode="date"
-                            display="default"
-                            onChange={(event, selectedDate) => {
-                                if (selectedDate) {
-                                    this.setState({
-                                        beginningDate: selectedDate,
-                                        showDatePicker:false
-                                    })
-                                }
-                            }}
+                    <View style={styles.dataGroup}>
+                        <Text style={styles.title}>איש קשר</Text >
+                        <TextInput style={styles.inputStyle}
+                            onChangeText={(text) => this.setState({ contactPerson: text })}
+                            returnKeyType='go'
+                            autoCapitalize="none"
+                            autoCorrect={false}
+                            value={this.state.contactPerson}
                         />
-                    }
-                </View>
+                    </View>
 
-                <View style={styles.dataGroup}>
-                    <Text style={styles.title}>תאריך סיום שלב ראשוני</Text >
-                    <Text style={styles.dataStyle}>{this.getFutureDate(this.state.beginningDate,this.YEARS_FOR_QUESTIONS)}</Text>
-                </View>
+                    <View style={styles.dataGroup}>
+                        <Text style={styles.title}>טלפון ליצירת קשר</Text >
+                        <TextInput style={styles.inputStyle}
+                            onChangeText={(text) => this.setState({ contactPhone: text })}
+                            returnKeyType='go'
+                            autoCapitalize="none"
+                            autoCorrect={false}
+                            value={this.state.contactPhone}
+                        />
+                    </View>
 
-                <View style={styles.dataGroup}>
-                    <Text style={styles.title}>תאריך סיום ביצוע הבקרות</Text >
-                    <Text style={styles.dataStyle}>{this.getFutureDate(this.state.beginningDate,this.YEARS_FOR_CONTROLS)}</Text>
-                </View>
-                <MainButton
-                    title="עדכון פרטים"
-                    onPress={this.saveMyData}
-                    width="65%" 
-                />
-            </View>
+                    <View style={styles.dataGroup}>
+                        <Text style={styles.title}>מייל ליצירת קשר</Text >
+                        <TextInput style={styles.inputStyle}
+                            onChangeText={(text) => this.setState({ contactEmail: text })}
+                            returnKeyType='go'
+                            autoCapitalize="none"
+                            autoCorrect={false}
+                            value={this.state.contactEmail}
+                        />
+                    </View>
+
+                    <View style={styles.dataGroup}>
+                        <Text style={styles.title}>תאריך תחילת התהליך</Text >
+                        <TouchableOpacity style={styles.inputStyle} onPress={() => this.setState({ showDatePicker: true })}>
+                            <Text style={{ textAlign: 'left' }}>{this.formatDate(this.state.beginningDate)}</Text>
+                        </TouchableOpacity>
+                        {!!this.state.showDatePicker &&
+                            <DateTimePicker
+                                value={this.state.beginningDate}
+                                mode="date"
+                                display="default"
+                                onChange={(event, selectedDate) => {
+                                    if (selectedDate) {
+                                        this.setState({
+                                            beginningDate: selectedDate,
+                                            showDatePicker: false
+                                        })
+                                    }
+                                }}
+                            />
+                        }
+                    </View>
+
+                    <View style={styles.dataGroup}>
+                        <Text style={styles.title}>תאריך סיום שלב ראשוני</Text >
+                        <Text style={styles.dataStyle}>{this.getFutureDate(this.state.beginningDate, this.YEARS_FOR_QUESTIONS)}</Text>
+                    </View>
+
+                    <View style={styles.dataGroup}>
+                        <Text style={styles.title}>תאריך סיום ביצוע הבקרות</Text >
+                        <Text style={styles.dataStyle}>{this.getFutureDate(this.state.beginningDate, this.YEARS_FOR_CONTROLS)}</Text>
+                    </View>
+                    <MainButton
+                        title="עדכון פרטים"
+                        onPress={this.saveMyData}
+                        width="65%"
+                    />
+                </ScrollView>
+            </KeyboardAvoidingView>
         )
     }
 }
 const styles = StyleSheet.create({
+    scrollViewContainer: {
+        // flex: 1,
+        paddingTop: Platform.OS == "android" ? StatusBar.currentHeight : 0,
+        
+    },
+    
     container: {
-        flex: 1,
+        justifyContent:'space-between',
+        // flex:1
         paddingHorizontal: 20,
-        justifyContent: 'space-evenly',
-        alignItems: 'flex-start',
+        flexGrow: 1,
+        flexShrink: 1,
+        // justifyContent: 'space-evenly'
     },
     titleStyle: {
         width: '100%',
@@ -199,6 +209,7 @@ const styles = StyleSheet.create({
     dataStyle: {
         marginTop: 5,
         fontSize: 16,
+textAlign:'left'
     },
     inputStyle: {
         borderColor: '#169BD5',
@@ -208,19 +219,19 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         paddingVertical: 5,
         fontSize: 15,
-        textAlign:'right'
+        textAlign: 'right'
     },
-    loadContainer:{
+    loadContainer: {
         flex: 1,
         paddingHorizontal: 20,
-        justifyContent:'center'
+        justifyContent: 'center'
     },
     loadDetails: {
         fontSize: 40,
         textAlign: 'center',
         marginBottom: 10,
-        color:"#757575"
-       
+        color: "#757575"
+
     },
 })
 

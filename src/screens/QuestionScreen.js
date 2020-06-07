@@ -199,7 +199,7 @@ class QuestionScreen extends React.Component {
         const showAnswers = showQuestion.answers.map((answer, index) => {
             return {
                 key: index.toString(),
-                text: answer.toString()
+                answer: answer
             }
         })
         return (
@@ -215,11 +215,10 @@ class QuestionScreen extends React.Component {
                     </View>
                     {this.props.route.params.questionType == 'damage' ?
                         showAnswers.map((item, index) => {
-
                             return (
                                 <Answer
                                     key={item.key}
-                                    text={item.text}
+                                    text={item}
                                     selected={index == this.state.currentAnswer}
                                     onPress={() => { this.setState({ currentAnswer: index }) }} />
                             )
@@ -228,11 +227,10 @@ class QuestionScreen extends React.Component {
 
 
                         showAnswers.map((item, index) => {
-
                             return (
                                 <Answer
                                     key={item.key}
-                                    text={item.text}
+                                    text={item.answer.toString()}
                                     selected={index == this.state.currentAnswer}
                                     onPress={() => { this.setState({ currentAnswer: index }) }} />
                             )

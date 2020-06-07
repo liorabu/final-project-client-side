@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, StyleSheet, View, Button, TouchableOpacity, FlatList, TextInput, Alert } from 'react-native';
+import { Text, StyleSheet, View, Button, TouchableOpacity, FlatList, TextInput, Alert, ScrollView,KeyboardAvoidingView, Platform, StatusBar } from 'react-native';
 import MainButton from '../components/MainButton';
 import { saveSystem, getMaxRist } from '../utils/MongoDbUtils';
 import { UserContext } from '../contexts/UserContext';
@@ -73,75 +73,85 @@ class NewSystemScreen extends React.Component {
 
     render() {
         return (
-            <View style={styles.container}>
-                <Text style={styles.textStyle}>שם המערכת</Text>
-                <TextInput
-                    onChangeText={(text) => this.setState({ systemName: text })}
-                    style={styles.input}
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    placeholder="מערכת כלשהי"
-                />
-                <Text style={styles.textStyle}>חומרים מסוכנים בשימוש המערכת</Text>
-                <TextInput
-                    onChangeText={(text) => this.setState({ materialName: text })}
-                    style={styles.textArea}
-                    placeholder="חומר כלשהו"
-                    numberOfLines={10}
-                    multiline={true}
-                />
-                <Text style={styles.textStyle}>הסיכון המקסימלי שהמערכת מהווה</Text>
-                <View style={styles.dropDown}>
-                    <Picker
-                        selectedValue={this.state.maxRisk}
-                        style={{ width: '100%', height: '100%' }}
-                        onValueChange={(itemValue, itemIndex) => { this.setState({ maxRisk: itemValue }) }}
-                    >
-                        <Picker.Item key="none" label="יש לבחור סיכון" value="" />
-                        {
-                            this.state.risks.map((item) => {
-                                return (
-                                    <Picker.Item
-                                        key={item._id}
-                                        label={item.risk}
-                                        value={item.risk} />
-                                );
-                            })
-                        }
-                    </Picker>
-                </View>
-                <View style={styles.checkbox}>
-                    <CheckBox
-                        value={this.state.RiskLevelCheck}
-                        onValueChange={() => this.setToggleCheckBox()}
+           
+                <KeyboardAvoidingView behavior={null} style={{ flex: 1,justifyContent:'space-evenly' }}>
+                <ScrollView style={styles.scrollViewContainer} contentContainerStyle={styles.container} >
+                    <Text style={styles.textStyle}>שם המערכת</Text>
+                    <TextInput
+                        onChangeText={(text) => this.setState({ systemName: text })}
+                        style={styles.input}
+                        autoCapitalize="none"
+                        autoCorrect={false}
+                        placeholder="מערכת כלשהי"
                     />
-                    <Text >הזנת רמת הסיכון באופן ידני</Text>
-                </View >
-                {this.state.RiskLevelCheck &&
-                    <TextInput style={styles.input}
-                        onChangeText={(text) => this.setState({ riskLevel: text })}
-                        placeholder="יש להזין את רמת הסיכון כאן"
+                    <Text style={styles.textStyle}>חומרים מסוכנים בשימוש המערכת</Text>
+                    <TextInput
+                        onChangeText={(text) => this.setState({ materialName: text })}
+                        style={styles.textArea}
+                        placeholder="חומר כלשהו"
+                        numberOfLines={10}
                         multiline={true}
                     />
-                }
-                {/* </View > */}
-                <MainButton
-                    title="הוספת המערכת"
-                    onPress={this.saveMySystem}
-                    width="65%" margin="20%"
-                />
-            </View>
+                    <Text style={styles.textStyle}>הסיכון המקסימלי שהמערכת מהווה</Text>
+                    <View style={styles.dropDown}>
+                        <Picker
+                            selectedValue={this.state.maxRisk}
+                            style={{ width: '100%', height: '100%' }}
+                            onValueChange={(itemValue, itemIndex) => { this.setState({ maxRisk: itemValue }) }}
+                        >
+                            <Picker.Item key="none" label="יש לבחור סיכון" value="" />
+                            {
+                                this.state.risks.map((item) => {
+                                    return (
+                                        <Picker.Item
+                                            key={item._id}
+                                            label={item.risk}
+                                            value={item.risk} />
+                                    );
+                                })
+                            }
+                        </Picker>
+                    </View>
+                    <View style={styles.checkbox}>
+                        <CheckBox
+                            value={this.state.RiskLevelCheck}
+                            onValueChange={() => this.setToggleCheckBox()}
+                        />
+                        <Text >הזנת רמת הסיכון באופן ידני</Text>
+                    </View >
+                    {this.state.RiskLevelCheck &&
+                        <TextInput style={styles.input}
+                            onChangeText={(text) => this.setState({ riskLevel: text })}
+                            placeholder="יש להזין את רמת הסיכון כאן"
+                            multiline={true}
+                        />
+                    }
+                    {/* </View > */}
+                    <MainButton
+                        title="הוספת המערכת"
+                        onPress={this.saveMySystem}
+                        width="65%" margin="20%"
+                    />
+                    </ScrollView>
+                </KeyboardAvoidingView>
         );
     }
 }
 
 const styles = StyleSheet.create({
+    scrollViewContainer: {
+        // flex: 1,
+        paddingTop: Platform.OS == "android" ? StatusBar.currentHeight : 0,
+        
+    },
+    
     container: {
-        flex: 1,
+        justifyContent:'space-between',
+        // flex:1
         paddingHorizontal: 20,
-        paddingTop: 7,
-        justifyContent: 'space-evenly'
-
+        flexGrow: 1,
+        flexShrink: 1,
+        // justifyContent: 'space-evenly'
     },
     textStyle: {
         fontSize: 16,

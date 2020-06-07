@@ -16,14 +16,34 @@ export default Answer = (props) => {
 
     }
 
+    renderText = (value) => {
+        if(typeof(value) == "object" && value.answer && value.answer.length > 0){
+            // we got an array
+            return value.answer.map((item, index) => {
+                return <Text
+                    key={`${value.key}_${index}`}
+                    style={[styles.answerText, selectedStyle]}>{item}</Text>;
+            });
+        }
+
+        return <Text style={[styles.answerText, selectedStyle]}>{value}</Text>;
+    }
+
+    // const opacity = props.selected ? 1 : 0.4;
+
     return (
         <View style={[styles.answerContainer, selectedTouchableStyle]}>
             <CheckBox
                 value={props.selected}
-                onValueChange={() => props.onPress}
+                onValueChange={props.onPress}
             />
-            <TouchableOpacity  onPress={props.onPress}>
-                <Text style={[styles.answerText, selectedStyle]}>{props.text}</Text>
+            
+            {/* <Text style={{opacity, color: 'green'}}>נבחר</Text> */}
+
+            <TouchableOpacity style={{flex: 1}} onPress={props.onPress}>
+                <>
+                    { renderText(props.text) }
+                </>
             </TouchableOpacity>
         </View>
     );
@@ -42,6 +62,6 @@ const styles = StyleSheet.create({
     },
     answerText: {
         fontSize: 16,
-        alignSelf: 'flex-start',
+        alignSelf: 'flex-start'
     }
 });

@@ -37,6 +37,23 @@ class SystemsScreen extends React.Component {
         this.loadMySystems();
     }
 
+    getSystemStatusLevel = (statusText) => {
+        switch(statusText){
+            case 'חישוב רמת סיכון': {
+                return 1;
+            }
+            case 'ביצוע בקרות': {
+                return 2;
+            }
+            case 'סיום': {
+                return 3;
+            }
+            default: {
+                return 0;
+            }
+        }
+    }
+
     loadMySystems = () => {
         getSystems(this.context.userId).then(result => {
             if (!result) {
@@ -45,6 +62,24 @@ class SystemsScreen extends React.Component {
             if (result.length > 0) {
                 this.state.isLoading = true
             }
+
+            result.sort((a,b) => {
+                const aLevel = this.getSystemStatusLevel(a.status);
+                const bLevel = this.getSystemStatusLevel(b.status);
+
+                return aLevel - bLevel;
+
+                // if(aLevel < bLevel){        
+                //     return -1;
+                // }
+                // else if(aLevel > bLevel){   
+                //     return 1;
+                // }
+                // else {                      
+                //     return 0;
+                // }
+            });
+
             this.setState({
                 systems: result,
             });
@@ -206,8 +241,12 @@ const styles = StyleSheet.create({
         marginVertical: '1%',
         marginHorizontal: '1%',
         flexDirection:'row',
-        justifyContent:'space-between'
+        justifyContent:'space-between',
+        alignItems: 'center'
 
+    },
+    dataStyle: {
+        flex: 1
     },
     circleStyle:{
         borderWidth:5,
