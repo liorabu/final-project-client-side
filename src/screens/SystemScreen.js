@@ -13,8 +13,18 @@ class SystemScreen extends React.Component {
         this.state = {
             system: '',
         }
+        const unsubscribeFocus = null;
     }
     componentDidMount() {
+        this.loadThisSystem();
+        this.unsubscribeFocus = this.props.navigation.addListener('focus', this.onScreenFocus);
+    }
+    componentWillUnmount() {
+        if (this.unsubscribeFocus) {
+            this.unsubscribeFocus();
+        }
+    }
+    onScreenFocus = () => {
         this.loadThisSystem();
     }
 

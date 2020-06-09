@@ -43,6 +43,7 @@ class QuestionScreen extends React.Component {
         }
 
         else if (this.props.route.params.questionType == 'damage') {
+          
             this.setState({
                 buttonHeight: '5.5%',
                 questionMargin: '15%',
@@ -70,9 +71,7 @@ class QuestionScreen extends React.Component {
                 return;
             }
             else if (result.length > 0) {
-
                 const existsAnswer = result.find((item) => item.questionNumber == this.state.currentQuestion)
-
                 this.setState({
                     answers: result,
                     currentAnswer: (!existsAnswer) ? null : existsAnswer.answerId - 1
@@ -90,6 +89,7 @@ class QuestionScreen extends React.Component {
 
     //saving array of the answers for calculating this Exposure number (P)
     saveAnswer = (questionId, answerId) => {
+      
         this.setState((prevState) => {
             const newAnswers = [...prevState.answers];
             const answerIndex = newAnswers.findIndex((item) => item.questionNumber == questionId);
@@ -136,6 +136,7 @@ class QuestionScreen extends React.Component {
                 if (!result) {
                     Alert.alert('', 'שמירת התשובה נכשלה, אנא נסה שוב', [{ text: 'אישור' }])
                 }
+
                 return;
             }).catch(error => {
                 console.log('fail', error);
@@ -164,6 +165,7 @@ class QuestionScreen extends React.Component {
     }
 
     calculateDamageLevel = () => {
+       
         let damageLevel = 0;
         const answersNumbers = this.state.answers;
         for (let i = 0; i < answersNumbers.length; i++) {
@@ -172,8 +174,11 @@ class QuestionScreen extends React.Component {
         }
         saveDamageLevel(this.context.systemId, damageLevel).then(result => {
             if (!result) {
-                Alert.alert('', 'לא בוצע חישוב רמת חשיפה', [{ text: 'אישור' }])
+               
+
+                Alert.alert('', 'לא בוצע חישוב רמת נזק', [{ text: 'אישור' }])
             }
+           
             return;
         }).catch(error => {
             console.log('fail', error);

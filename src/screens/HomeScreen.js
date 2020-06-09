@@ -13,11 +13,22 @@ class HomeScreen extends React.Component {
       performedControls: [],
       userControls:0
     }
+    const unsubscribeFocus = null;
   }
 
   componentDidMount() {
     this.loadSashboardData();  
+    this.unsubscribeFocus = this.props.navigation.addListener('focus', this.onScreenFocus);
   }
+
+  componentWillUnmount() {
+    if (this.unsubscribeFocus) {
+        this.unsubscribeFocus();
+    }
+}
+onScreenFocus = () => {
+  this.loadSashboardData();
+}
 
   loadSashboardData = () => {
     getDashboardData(this.context.userId).then(result => {

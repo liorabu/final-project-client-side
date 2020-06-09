@@ -26,9 +26,9 @@ export async function login(userNumber, userPassword) {
   const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
   const db = mongoClient.db("CyberDefence");
   const users = db.collection("users");
-  const user=await users.findOne({ number: parseInt(userNumber), password: userPassword });
+  const user = await users.findOne({ number: parseInt(userNumber), password: userPassword });
 
-  if(!user.beginningDate){
+  if (!user.beginningDate) {
     updateUserBeginningDate(user._id);
   }
 
@@ -36,13 +36,13 @@ export async function login(userNumber, userPassword) {
 }
 
 
-export async function updateUserBeginningDate(userId){
+export async function updateUserBeginningDate(userId) {
   const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
   const db = mongoClient.db("CyberDefence");
   const users = db.collection("users");
-  const user=await users.findOne({ _id:userId });
+  const user = await users.findOne({ _id: userId });
   return await users.updateOne({
-    _id:userId
+    _id: userId
   }, {
     $set: { beginningDate: new Date() },
   })
@@ -77,8 +77,8 @@ export async function saveSystem(userId, name, materialsNames, maxRisk, status, 
   const systems = db.collection("Systems");
   let controls = await getControls(riskLevel);
 
-    let controlsNumber = controls.length;
-    // console.log()
+  let controlsNumber = controls.length;
+  // console.log()
   return await systems.insertOne({
     userId: userId,
     name: name, status: status,
@@ -133,12 +133,13 @@ export async function saveExposureLevel(systemId, exposureLevel) {
   const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
   const db = mongoClient.db("CyberDefence");
   const systems = db.collection("Systems");
-
+  // console.log(systemId)
   await systems.updateOne({
     _id: systemId,
   }, {
     $set: { exposureLevel: exposureLevel },
   })
+
   return calculateRiskLevel(systemId);
 }
 
@@ -171,40 +172,47 @@ export async function saveDamageAnswers(userId, systemId, questionNumber, answer
 //calculate & save the risk level of a system
 export async function calculateRiskLevel(systemId) {
   let system = await getSystem(systemId);
-  if (system.damageLevel && system.exposureLevel) {
-    let riskLevel = Math.round(system.exposureLevel + 3 * system.damageLevel);
-    switch (true) {
-      case riskLevel >= 4 && riskLevel <= 7:
-        riskLevel = 1;
-        break;
-      case riskLevel >= 8 && riskLevel <= 11:
-        riskLevel = 2;
-        break;
-      case riskLevel >= 12 && riskLevel <= 14:
-        riskLevel = 3;
-        break;
-      case riskLevel >= 15 && riskLevel <= 16:
-        riskLevel = 4;
-        break;
-    }
-    const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
-    const db = mongoClient.db("CyberDefence");
-    const systems = db.collection("Systems");
-    let status = "ביצוע בקרות";
-    let controls = await getControls(riskLevel);
 
-    let controlsNumber = controls.length;
-    return await systems.updateOne({
-      _id: systemId,
-    }, {
-      $set: {
-        riskLevel: riskLevel,
-        status: status,
-        controlsNumber: controlsNumber
-      },
-    })
+
+  if (!system.damageLevel || !system.exposureLevel) {
+    return "Irrelevant"
   }
+
+  let riskLevel = Math.round(system.exposureLevel + 3 * system.damageLevel);
+
+  switch (true) {
+    case riskLevel >= 4 && riskLevel <= 7:
+      riskLevel = 1;
+      break;
+    case riskLevel >= 8 && riskLevel <= 11:
+      riskLevel = 2;
+      break;
+    case riskLevel >= 12 && riskLevel <= 14:
+      riskLevel = 3;
+      break;
+    case riskLevel >= 15 && riskLevel <= 16:
+      riskLevel = 4;
+      break;
+  }
+  const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
+  const db = mongoClient.db("CyberDefence");
+  const systems = db.collection("Systems");
+  let status = "ביצוע בקרות";
+  let controls = await getControls(riskLevel);
+
+  let controlsNumber = controls.length;
+
+  return await systems.updateOne({
+    _id: systemId,
+  }, {
+    $set: {
+      riskLevel: riskLevel,
+      status: status,
+      controlsNumber: controlsNumber
+    },
+  })
 }
+
 
 //delete a system
 export async function deleteSystem(systemId) {
