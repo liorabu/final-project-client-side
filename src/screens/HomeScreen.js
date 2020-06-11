@@ -54,7 +54,7 @@ onScreenFocus = () => {
           <Option text='מערכות שהוזנו' onPress={() => { this.props.navigation.navigate('Systems') }} />
           <Option text='הזנת מערכת' onPress={() => { this.props.navigation.navigate('NewSystem') }} />
           <Option text='פרטים אישיים' onPress={() => { this.props.navigation.navigate('UserDetails') }} />
-          <Option text='צור קשר' />
+          <Option text='צור קשר' onPress={() => { this.props.navigation.navigate('Contact') }} />
         </View>
 
         <View style={styles.dashboard}>

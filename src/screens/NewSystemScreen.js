@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, StyleSheet, View, Button, TouchableOpacity, FlatList, TextInput, Alert, ScrollView,KeyboardAvoidingView, Platform, StatusBar } from 'react-native';
+import { Text, StyleSheet, View, Button, TouchableOpacity, FlatList, TextInput, Alert, ScrollView, KeyboardAvoidingView, Platform, StatusBar } from 'react-native';
 import MainButton from '../components/MainButton';
 import { saveSystem, getMaxRist } from '../utils/MongoDbUtils';
 import { UserContext } from '../contexts/UserContext';
@@ -35,7 +35,7 @@ class NewSystemScreen extends React.Component {
 
             });
         }).catch(error => {
-            // console.log('fail', error);
+            console.log('fail', error);
         });
     }
 
@@ -73,8 +73,7 @@ class NewSystemScreen extends React.Component {
 
     render() {
         return (
-           
-                <KeyboardAvoidingView behavior={null} style={{ flex: 1,justifyContent:'space-evenly' }}>
+            <KeyboardAvoidingView behavior={null} style={{ flex: 1, justifyContent: 'space-evenly' }}>
                 <ScrollView style={styles.scrollViewContainer} contentContainerStyle={styles.container} >
                     <Text style={styles.textStyle}>שם המערכת</Text>
                     <TextInput
@@ -132,8 +131,8 @@ class NewSystemScreen extends React.Component {
                         onPress={this.saveMySystem}
                         width="65%" margin="20%"
                     />
-                    </ScrollView>
-                </KeyboardAvoidingView>
+                </ScrollView>
+            </KeyboardAvoidingView>
         );
     }
 }
@@ -142,12 +141,11 @@ const styles = StyleSheet.create({
     scrollViewContainer: {
         // flex: 1,
         paddingTop: Platform.OS == "android" ? StatusBar.currentHeight : 0,
-        
+
     },
-    
+
     container: {
-        justifyContent:'space-between',
-        // flex:1
+        justifyContent: 'space-between',
         paddingHorizontal: 20,
         flexGrow: 1,
         flexShrink: 1,

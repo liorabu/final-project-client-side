@@ -91,6 +91,7 @@ class SystemsScreen extends React.Component {
 
     getSystemData = (system) => {
         this.context.setSystemId(system._id);
+        this.context.setSystemName(system.name);
         this.props.navigation.navigate('System')
     }
 
