@@ -61,7 +61,8 @@ const styles = StyleSheet.create({
         width:'100%'
     },
     answerText: {
+        width:'100%',
         fontSize: 16,
-        alignSelf: 'flex-start'
+        textAlign:'left'
     }
 });

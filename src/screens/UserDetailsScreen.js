@@ -167,11 +167,11 @@ class UserDetailsScreen extends React.Component {
                         <Text style={styles.title}>תאריך סיום ביצוע הבקרות</Text >
                         <Text style={styles.dataStyle}>{this.getFutureDate(this.state.beginningDate, this.YEARS_FOR_CONTROLS)}</Text>
                     </View>
-                    <MainButton
-                        title="עדכון פרטים"
-                        onPress={this.saveMyData}
-                        width="65%"
-                    />
+                        <MainButton
+                            title="עדכון פרטים"
+                            onPress={this.saveMyData}
+                            width="65%"
+                        />
                 </ScrollView>
             </KeyboardAvoidingView>
         )
@@ -181,11 +181,11 @@ const styles = StyleSheet.create({
     scrollViewContainer: {
         // flex: 1,
         paddingTop: Platform.OS == "android" ? StatusBar.currentHeight : 0,
-        
+
     },
-    
+
     container: {
-        justifyContent:'space-between',
+        justifyContent: 'space-between',
         // flex:1
         paddingHorizontal: 20,
         flexGrow: 1,
@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
     dataStyle: {
         marginTop: 5,
         fontSize: 16,
-textAlign:'left'
+        textAlign: 'left'
     },
     inputStyle: {
         borderColor: '#169BD5',

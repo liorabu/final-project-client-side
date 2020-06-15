@@ -28,65 +28,65 @@ class ContactScreen extends React.Component {
             }
         });
     }
-    render() {
-        return (
-            <View style={styles.messageView}>
-                <Text style={styles.messageText}>יש ליצור קשר עם דוד ויסמן</Text>
-                <Text style={styles.messageText}>DavidV@sviva.gov.il‏</Text>
-            </View>
-        )
-    }
     // render() {
     //     return (
-    //         <KeyboardAvoidingView behavior={null} style={{ flex: 1, justifyContent: 'space-evenly' }}>
-    //             <ScrollView style={styles.scrollViewContainer} contentContainerStyle={styles.container} >
-    //                 <View>
-    //                     <Text style={styles.textStyle}>נושא הפניה</Text>
-    //                     <TextInput style={styles.textArea}
-    //                         onChangeText={(text) => this.setState({ messageBody: text })}
-    //                         placeholder="יש לכתוב את גוף ההודעה כאן"
-    //                         multiline={true}
-    //                     />
-    //                 </View>
-    //                 <View style={styles.checkbox}>
-    //                     <CheckBox
-    //                         value={this.state.statementCheckbok}
-    //                         onValueChange={() => this.setStatementCheckBox()}
-    //                     />
-    //                     <Text >להגשת הצהרת סיום התהליך</Text>
-    //                 </View>
-    //                 {this.state.statementCheckbok &&
-    //                     <View style={{marginBottom:'10%'}}>
-    //                         <View style={[styles.checkbox], { paddingStart: '5%', flexDirection: 'row', marginBottom: '5%' }}>
-    //                             <CheckBox
-    //                                 value={this.state.confirmCheckbox}
-    //                                 onValueChange={() => this.setConfirmCheckBox()}
-    //                             />
-    //                             <View style={{ flex: 1 }}>
-    //                                 <Text >אני מצהיר/ה כי הפרטים שמסרתי בטפסים הינם מלאים ונכונים.</Text>
-    //                                 <Text>ידוע לי שהשמטה או מסירת פרטים לא נכונים הינה עבירה על החוק.</Text>
-    //                                 <Text>אני מתחייב/ת להודיע למשרד להגנת הסביבה על כל שינוי שיחול בפרטים דלעיל תוך שבוע ימים מתאריך השינוי</Text>
-
-    //                             </View>
-
-    //                         </View>
-    //                         <View>
-    //                         <MainButton
-    //                             title="העלאת קובץ ההצהרה"
-    //                             width="65%" height="100%" />
-    //                             </View>
-    //                     </View>
-
-    //                 }
-    //                 <View style={{ marginTop: '5%' }}>
-    //                     <MainButton
-    //                         title="שליחת ההודעה"
-    //                         width="65%"  height="100%"/>
-    //                 </View>
-    //             </ScrollView>
-    //         </KeyboardAvoidingView>
+    //         <View style={styles.messageView}>
+    //             <Text style={styles.messageText}>יש ליצור קשר עם דוד ויסמן</Text>
+    //             <Text style={styles.messageText}>DavidV@sviva.gov.il‏</Text>
+    //         </View>
     //     )
     // }
+    render() {
+        return (
+            <KeyboardAvoidingView behavior={null} style={{ flex: 1, justifyContent: 'space-evenly' }}>
+                <ScrollView style={styles.scrollViewContainer} contentContainerStyle={styles.container} >
+                    <View>
+                        <Text style={styles.textStyle}>נושא הפניה</Text>
+                        <TextInput style={styles.textArea}
+                            onChangeText={(text) => this.setState({ messageBody: text })}
+                            placeholder="יש לכתוב את גוף ההודעה כאן"
+                            multiline={true}
+                        />
+                    </View>
+                    <View style={styles.checkbox}>
+                        <CheckBox
+                            value={this.state.statementCheckbok}
+                            onValueChange={() => this.setStatementCheckBox()}
+                        />
+                        <Text >להגשת הצהרת סיום התהליך</Text>
+                    </View>
+                    {this.state.statementCheckbok &&
+                        <View style={{ marginBottom: '10%' }}>
+                            <View style={[styles.checkbox], { paddingStart: '5%', flexDirection: 'row', marginBottom: '5%' }}>
+                                <CheckBox
+                                    value={this.state.confirmCheckbox}
+                                    onValueChange={() => this.setConfirmCheckBox()}
+                                />
+                                <View style={{ flex: 1 }}>
+                                    <Text >אני מצהיר/ה כי הפרטים שמסרתי בטפסים הינם מלאים ונכונים.</Text>
+                                    <Text>ידוע לי שהשמטה או מסירת פרטים לא נכונים הינה עבירה על החוק.</Text>
+                                    <Text>אני מתחייב/ת להודיע למשרד להגנת הסביבה על כל שינוי שיחול בפרטים דלעיל תוך שבוע ימים מתאריך השינוי</Text>
+
+                                </View>
+
+                            </View>
+                            {/* <View>
+                                <MainButton
+                                    title="העלאת קובץ ההצהרה"
+                                    width="65%" height="100%" />
+                            </View> */}
+                        </View>
+
+                    }
+                    <View style={{marginTop:'4%'}}>
+                        <MainButton
+                            title="שליחת ההודעה"
+                            width="65%" height="40%" />
+                    </View>
+                </ScrollView>
+            </KeyboardAvoidingView>
+        )
+    }
 }
 
 const styles = StyleSheet.create({
@@ -121,17 +121,17 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center'
     },
-    messageView:{
-        flex:1,
-        flexDirection:'column',
-        alignItems:'center',
-        justifyContent:'center'
+    messageView: {
+        flex: 1,
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
-    messageText:{
+    messageText: {
         fontSize: 20,
         textAlign: 'center',
         marginBottom: '3%',
-        fontWeight:'bold'
+        fontWeight: 'bold'
     }
 })
 

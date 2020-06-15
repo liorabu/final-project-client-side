@@ -338,6 +338,7 @@ const styles = StyleSheet.create({
     },
 
     questionContainer: {
+        width:'100%',
         borderColor: '#169BD5',
         borderWidth: 3,
         width: '90%',
@@ -347,13 +348,17 @@ const styles = StyleSheet.create({
     },
 
     questionNumberContainer: {
+        width:'100%',
         position: 'absolute',
+        alignSelf:'center',
+        textAlign:'center',
         top: -18,
         left: 0,
         right: 0,
     },
 
     questionNumberText: {
+        width:'50%',
         backgroundColor: '#f4f2f4',
         paddingHorizontal: '1%',
         alignSelf: 'center',
@@ -362,6 +367,7 @@ const styles = StyleSheet.create({
     },
 
     questionText: {
+        flex:1,
         textAlign: 'center',
         fontSize: 20,
         fontWeight: 'bold'
@@ -375,7 +381,9 @@ const styles = StyleSheet.create({
     },
     previousText:
     {
-        color: '#169BD5'
+        color: '#169BD5',
+        fontSize:18,
+        marginTop:'5%'
     },
     outerStyle: {
         width: '100%',

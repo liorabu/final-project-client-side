@@ -11,24 +11,24 @@ class HomeScreen extends React.Component {
       systems: [],
       doneSystems: [],
       performedControls: [],
-      userControls:0
+      userControls: 0
     }
     const unsubscribeFocus = null;
   }
 
   componentDidMount() {
-    this.loadSashboardData();  
+    this.loadSashboardData();
     this.unsubscribeFocus = this.props.navigation.addListener('focus', this.onScreenFocus);
   }
 
   componentWillUnmount() {
     if (this.unsubscribeFocus) {
-        this.unsubscribeFocus();
+      this.unsubscribeFocus();
     }
-}
-onScreenFocus = () => {
-  this.loadSashboardData();
-}
+  }
+  onScreenFocus = () => {
+    this.loadSashboardData();
+  }
 
   loadSashboardData = () => {
     getDashboardData(this.context.userId).then(result => {
@@ -39,7 +39,7 @@ onScreenFocus = () => {
         systems: result.userSystems,
         doneSystems: result.doneSystems,
         performedControls: result.performedControls,
-        userControls:result.userControls
+        userControls: result.userControls
       });
     }).catch(error => {
       console.log('fail', error);
@@ -51,17 +51,17 @@ onScreenFocus = () => {
     return (
       <View style={styles.container}>
         <View>
-          <Option text='מערכות שהוזנו' onPress={() => { this.props.navigation.navigate('Systems') }} />
-          <Option text='הזנת מערכת' onPress={() => { this.props.navigation.navigate('NewSystem') }} />
           <Option text='פרטים אישיים' onPress={() => { this.props.navigation.navigate('UserDetails') }} />
           <Option text='צור קשר' onPress={() => { this.props.navigation.navigate('Contact') }} />
+          <Option text='מערכות שהוזנו' onPress={() => { this.props.navigation.navigate('Systems') }} />
+          <Option text='הזנת מערכת' onPress={() => { this.props.navigation.navigate('NewSystem') }} />
         </View>
 
         <View style={styles.dashboard}>
           {this.state.systems.length > -1 && this.state.doneSystems.length > -1 && this.state.performedControls.length > -1 &&
             <>
               <Text style={styles.dashboardText}>מערכות שהוזנו: {this.state.systems.length}</Text>
-             
+
               <Text style={styles.dashboardText}>בקרות כוללות לביצוע: {this.state.userControls}</Text>
               <Text style={styles.dashboardText}>בקרות שהושלמו: {this.state.performedControls.length}</Text>
               <Text style={styles.dashboardText}>מערכות בסטטוס סיום: {this.state.doneSystems.length}</Text>

@@ -122,13 +122,13 @@ class SystemsScreen extends React.Component {
 
     backgroundBystage = (system) => {
         if (system.status == "חישוב רמת סיכון") {
-            return "#458B00"
+            return "#F59997"
         }
         else if (system.status == "ביצוע בקרות") {
-            return "#FFFF66"
+            return "#FEF3BD"
         }
         else if (system.status == "סיום") {
-            return "#FF0000"
+            return "#B2D5B7"
         }
     }
 
@@ -183,9 +183,9 @@ class SystemsScreen extends React.Component {
                                 <Text style={styles.modalText}>בחלון זה מוצגות המערכות הממוחשבות שהוזנו.</Text>
                                 <Text style={styles.modalText}>המידע המוצג לכל מערכת הוא שם המערכת וסטטוס ההתקדמות מבחינת בתהליך.</Text>
                                 <Text style={styles.modalText}>בנוסף, לצורך ראייה נוחה יותר על מצב כלל המערכות, לצד כל מערכת מופיע אייקון בצבע שונה המראה את מצב התקדמות שלה:</Text>
-                                <Text style={styles.modalText}>צבע ירוק מסמל את שלב חישוב רמת הסיכון של המערכת ובו נדרש מענה על השאלות המופיעות בדף המערכת.</Text>
+                                <Text style={styles.modalText}>צבע אדום מסמל את שלב חישוב רמת הסיכון של המערכת ובו נדרש מענה על השאלות המופיעות בדף המערכת.</Text>
                                 <Text style={styles.modalText}>צבע צהוב מסמל את שלב ביצוע הבקרות בהתאם לרמת הסיכון שהתקבלה.</Text>
-                                <Text style={styles.modalText}>צבע אדום מסמל את סיום הדרישות לגבי המערכת הספציפית.</Text>
+                                <Text style={styles.modalText}>צבע ירוק מסמל את סיום הדרישות לגבי המערכת הספציפית.</Text>
                                 <Text style={[styles.modalText,{marginTop:10}]}>לקבלת מידע מפורט לגבי מערכת ספציפית יש ללחוץ על באיזור המידע שלה.</Text>
                                 <TouchableOpacity onPress={this.onCloseDescription}>
                                     <Text style={styles.closeButton}>סגירה</Text>
@@ -237,7 +237,7 @@ const styles = StyleSheet.create({
         width: '90%',
         alignSelf: 'center',
         borderRadius: 10,
-        paddingVertical: '2%',
+        paddingBottom:'3%',
         paddingHorizontal: '3%',
         marginVertical: '1%',
         marginHorizontal: '1%',

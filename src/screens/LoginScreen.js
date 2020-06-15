@@ -21,7 +21,8 @@ class LoginScreen extends React.Component {
         else {
             login(this.state.username, this.state.password)
                 .then(result => {
-                    if (!result) {
+                    console.log(result)
+                    if (!result ) {
                         Alert.alert('', 'הנתונים שהוזנו לא תואמים את המידע שברשותנו', [{ text: 'אישור' }])
                         console.log('invalid usernumber / password');
                         return;
@@ -103,8 +104,10 @@ const styles = StyleSheet.create({
     },
     textStyle: {
         fontSize: 18,
+       
     },
     input: {
+        textAlign:'right',
         borderColor: '#797979',
         borderWidth: 3,
         borderRadius: 10,

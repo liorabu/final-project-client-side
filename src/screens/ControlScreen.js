@@ -175,7 +175,7 @@ class ControlScreen extends React.Component {
                 }).catch(error => {
                     console.log('fail', error);
                 });
-                this.state.performed.length + 1 == this.state.controls.length && setStatusToControls(this.context.systemId).then(result => {
+                this.state.performed.length == this.state.controls.length && setStatusToControls(this.context.systemId).then(result => {
                     if (!result) {
                         return;
                     }
@@ -189,7 +189,8 @@ class ControlScreen extends React.Component {
                     subclauseNmber: item.subclauseNmber,
                 });
                 savePerformedControl(this.context.userId, this.context.systemId, item._id, item.subclauseNmber);
-                this.state.performed.length == this.state.controls.length && setStatusToFinish(this.context.systemId).then(result => {
+              
+                this.state.performed.length+1 == this.state.controls.length && setStatusToFinish(this.context.systemId).then(result => {
                     if (!result) {
                         return;
                     }
@@ -214,11 +215,11 @@ class ControlScreen extends React.Component {
         let index = this.getIndex(item)
         let value = ""
         if (index > -1 && !!this.state.update[index].updateControl) {
-            value = this.state.update[index].updateControl     
-        } 
+            value = this.state.update[index].updateControl
+        }
         this.setState({
             updateControlText: value
-        })   
+        })
         return value;
     }
 
@@ -244,7 +245,7 @@ class ControlScreen extends React.Component {
                                             value={this.state.performed.findIndex((pid) => pid.subclauseNmber == item.subclauseNmber) > -1}
                                             onValueChange={() => this.onControlItemClicked(item)}
                                         />
-                                        <Text style={{ fontSize: 16 }}>{item.subclauseNmber} {item.subclause}</Text>
+                                        <Text style={{ flex: 1, fontSize: 16 }}>{item.subclauseNmber} {item.subclause}</Text>
                                     </View>
                                     {this.state.update.findIndex((pid) => pid.subclauseNmber == item.subclauseNmber) > -1 &&
                                         <>
@@ -380,6 +381,7 @@ class ControlScreen extends React.Component {
 }
 const styles = StyleSheet.create({
     controlContainer: {
+        flex: 1,
         borderTopColor: '#666666',
         borderTopWidth: 1,
         borderBottomColor: '#666666',

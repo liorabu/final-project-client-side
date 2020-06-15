@@ -28,7 +28,7 @@ export async function login(userNumber, userPassword) {
   const users = db.collection("users");
   const user = await users.findOne({ number: parseInt(userNumber), password: userPassword });
 
-  if (!user.beginningDate) {
+  if (user && !user.beginningDate ) {
     updateUserBeginningDate(user._id);
   }
 
@@ -393,73 +393,3 @@ export async function saveUserData(userId, beginningDate, contactEmail,
 
 
 
-/*
-
-export function loadClient_1(){
-  console.log('try to connect to mongo-db');
-  Stitch.initializeDefaultAppClient("cyber-xlqpr").then(client => {
-    client.auth
-      .loginWithCredential(new UserPasswordCredential('cyberDSystem@gmail.com', 'CyberStitch2020'))
-      .then(user => {
-        console.log(`Successfully logged in as user ${user.id}`);
-      })
-      .catch(err => {
-        console.log(`failed: ${err}`);
-      });
-  });
-}
-
-*/
-
-
-
-
-/*const uri = "mongodb+srv://cyberDSystem:Cyber2020@cluster0-8qvfx.mongodb.net/test?retryWrites=true&w=majority";
-const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });*/
-
-
-/*
-export async function checkConnection(onSuccessCallback, onFailureCallback){
-  try {
-    await client.connect();
-    onSuccessCallback();
-  }
-  catch(e){
-    onFailureCallback(e);
-  }
-  finally {
-    await client.close();
-  }
-}
-
-
-export async function login(userNumber, userPassword, onSuccessCallback, onFailureCallback){
-  try {
-    await client.connect();
-    const result = await client.db("CyberDefence").collection("users").findOne({number:userNumber, password: userPassword});
-
-    if(!result){
-      onFailureCallback("מספר ארגון או סיסמה שגויים")
-    }
-    else {
-      onSuccessCallback();
-    }
-  }
-  catch(e){
-    onFailureCallback(e);
-  }
-  finally {
-    await client.close();
-  }
-}
-*/
-
-/*checkConnection(
-  () => {
-    // on success
-    console.log("connection ok");
-  },
-  (error) => {
-    console.log("connection to mongodb failed" , error);
-  }
-)*/

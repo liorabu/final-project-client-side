@@ -59,10 +59,13 @@ marginTop:'6%'
     detailsRow: {
         flexDirection: 'row',
         justifyContent: 'space-between',
+        backgroundColor:'red'
     },
     dataText: {
         // fontSize: 40,
         marginVertical: '0.5%',
+        backgroundColor:'red',
+        color:'yellow'
     }
 
 });

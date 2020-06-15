@@ -43,13 +43,14 @@ const styles = StyleSheet.create({
         paddingVertical: '3%',
         borderRadius: 10,
         alignSelf: 'center',
-    
+        marginBottom: '5%'
     },
 
     buttonText: {
         color: 'white',
         textAlign: 'center',
         fontSize: 20,
-        justifyContent:'center'
+        justifyContent: 'center',
+
     }
 });

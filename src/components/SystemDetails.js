@@ -23,11 +23,11 @@ export default SystemDetails = (props) => {
                 </View >
                 <View style={styles.dataRow}>
                     <View style={styles.detailsRow}>
-                        <Text style={[styles.dataText, { fontWeight: 'bold' }]}>חומ"ס בשימוש</Text>
+                        <Text style={[styles.dataText, {width:'50%', fontWeight: 'bold' }]}>חומ"ס בשימוש</Text>
                         <Text style={[styles.dataText, { fontWeight: 'bold' }]}>סיכון מקסימלי</Text>
                     </View>
                     <View style={styles.detailsRow}>
-                    <Text style={[styles.dataText,{width:'50%'}]}>{props.system.materials}</Text>
+                    <Text style={[styles.dataText,{width:'50%',textAlign:'left'}]}>{props.system.materials}</Text>
                         <Text style={[styles.dataText,{ alignSelf: 'flex-end'}]}>{props.system.maxRisk}</Text>
                         
                     </View>
@@ -47,6 +47,8 @@ const styles = StyleSheet.create({
         marginTop: '6%',
     },
     title: {
+        width:'100%',
+        textAlign:'center',
         fontSize: 25,
         fontWeight: 'bold',
         marginBottom: '5%',

@@ -2,6 +2,7 @@ import 'react-native-gesture-handler';
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import { StyleSheet, SafeAreaView } from 'react-native';
 import QuestionScreen from './src/screens/QuestionScreen';
 import UserDetailsScreen from './src/screens/UserDetailsScreen';
@@ -18,6 +19,7 @@ import { createSwitchNavigator } from 'react-navigation';
 
 
 const Stack = createStackNavigator();
+const Drawer = createDrawerNavigator();
 
 export default function App() {
   const [userId, setUserId] = React.useState(0);
@@ -26,6 +28,22 @@ export default function App() {
   const [systemId, setSystemId] = React.useState(0);
   const [systemName, setSystemName] = React.useState(null);
   const value = { userId, setUserId, systemId, setSystemId, userName, setUserName,systemName, setSystemName };
+
+  // return (
+  //   <UserContext.Provider value={value}>
+  //     <SafeAreaView style={{ flex: 1 }}>
+  //       <NavigationContainer>
+  //         <Drawer.Navigator initialRouteName="Login">
+  //           <Drawer.Screen name="Login" component={LoginScreen} options={{ drawerLabel: () => null }} />
+  //           <Drawer.Screen name="Home" component={HomeScreen} />
+  //           <Drawer.Screen name="UserDetails" component={UserDetailsScreen} options={{ drawerLabel: () => null, title: 'פרטי מפעל', headerTitleAlign: 'center', headerTintColor: '#fff', headerStyle: { backgroundColor: '#027DB4' } }} />
+  //           <Drawer.Screen name="Systems" component={SystemsScreen} />
+  //           <Drawer.Screen name="Contact" component={ContactScreen} />
+  //         </Drawer.Navigator>
+  //       </NavigationContainer>        
+  //     </SafeAreaView>
+  //   </UserContext.Provider>
+  // );
 
   return (
     <UserContext.Provider value={value}>
@@ -39,9 +57,9 @@ export default function App() {
             <Stack.Screen name="Question" component={QuestionScreen} options={{ title: 'שאלות', headerTitleAlign: 'center', headerTintColor: '#fff', headerStyle: { backgroundColor: '#027DB4' } }} />
             <Stack.Screen name="Systems" component={SystemsScreen} options={{ title: 'מערכות קיימות', headerTitleAlign: 'center', headerTintColor: '#fff', headerStyle: { backgroundColor: '#027DB4' } }} />
             <Stack.Screen name="Control" component={ControlScreen} options={{ title: 'בקרות', headerTitleAlign: 'center', headerTintColor: '#fff', headerStyle: { backgroundColor: '#027DB4' } }} />
-            <Stack.Screen name="System" component={SystemScreen} options={{ title: systemName, headerTitleAlign: 'center', headerTintColor: '#fff', headerStyle: { backgroundColor: '#027DB4' } }} />
+            <Stack.Screen name="System" component={SystemScreen} options={{ title: 'פרטי מערכת', headerTitleAlign: 'center', headerTintColor: '#fff', headerStyle: { backgroundColor: '#027DB4' } }} />
             <Stack.Screen name="SystemDetails" component={SystemDetailsScreen} />
-            <Stack.Screen name="Contact" component={ContactScreen} />
+            <Stack.Screen name="Contact" component={ContactScreen} options={{ title: 'צור קשר', headerTitleAlign: 'center', headerTintColor: '#fff', headerStyle: { backgroundColor: '#027DB4' } }}/>
             <Stack.Screen name="NewSystem" component={NewSystemScreen} options={{ title: 'הוספת מערכת', headerTitleAlign: 'center', headerTintColor: '#fff', headerStyle: { backgroundColor: '#027DB4' } }} />
           </Stack.Navigator>
         </NavigationContainer>

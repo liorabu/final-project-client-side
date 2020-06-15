@@ -81,7 +81,7 @@ class NewSystemScreen extends React.Component {
                         style={styles.input}
                         autoCapitalize="none"
                         autoCorrect={false}
-                        placeholder="מערכת כלשהי"
+                        placeholder="שם המערכת"
                     />
                     <Text style={styles.textStyle}>חומרים מסוכנים בשימוש המערכת</Text>
                     <TextInput
