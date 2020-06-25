@@ -31,7 +31,7 @@ class UserDetailsScreen extends React.Component {
         this.loadUserData();
 
     }
-
+//load the data of the yser
     loadUserData = () => {
         getUserDetails(this.context.userId).then(result => {
             if (!result) {
@@ -49,7 +49,7 @@ class UserDetailsScreen extends React.Component {
             console.log('fail', error);
         });
     }
-
+//save / update the data
     saveMyData = () => {
         if (this.state.beginningDate == '' || this.state.beginningDate == '' || this.state.contactEmail == '' ||
             this.state.contactPerson == '' || this.state.contactPhone == '') {
@@ -70,6 +70,7 @@ class UserDetailsScreen extends React.Component {
         }
     }
 
+    //calulate dates 
     getFutureDate = (date, moreYears) => {
         let day = date.getDate();
         let month = date.getMonth() + 1;

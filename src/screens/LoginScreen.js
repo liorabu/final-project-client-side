@@ -13,7 +13,7 @@ class LoginScreen extends React.Component {
             password: '',
         }
     }
-
+//check if user exists on click the button
     handleLoginClick = () => {
         if (this.state.username == '' || this.state.password == '') {
             Alert.alert('', 'יש להכניס מספר ארגון וסיסמה', [{ text: 'אישור' }])

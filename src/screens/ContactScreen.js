@@ -14,6 +14,7 @@ class ContactScreen extends React.Component {
             confirmCheckbox: false
         }
     }
+    // while click on checkbox while finish the process- change the state
     setStatementCheckBox = () => {
         this.setState((prevState) => {
             return {
@@ -21,6 +22,7 @@ class ContactScreen extends React.Component {
             }
         });
     }
+    // while click on checkbox of correctness of things
     setConfirmCheckBox = () => {
         this.setState((prevState) => {
             return {

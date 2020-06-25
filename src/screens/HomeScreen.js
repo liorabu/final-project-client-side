@@ -17,7 +17,7 @@ class HomeScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.loadSashboardData();
+    this.loadDashboardData();
     this.unsubscribeFocus = this.props.navigation.addListener('focus', this.onScreenFocus);
   }
 
@@ -27,10 +27,10 @@ class HomeScreen extends React.Component {
     }
   }
   onScreenFocus = () => {
-    this.loadSashboardData();
+    this.loadDashboardData();
   }
-
-  loadSashboardData = () => {
+//loaad the general data
+  loadDashboardData = () => {
     getDashboardData(this.context.userId).then(result => {
       if (!result) {
         return;

@@ -143,7 +143,7 @@ class QuestionScreen extends React.Component {
             });
         }
     }
-
+//calculate the exposure level for the risk level
     calculateExposureLevel = () => {
         let exposureLevel = 0;
         const answersNumbers = this.state.answers;
@@ -163,7 +163,7 @@ class QuestionScreen extends React.Component {
             console.log('fail', error);
         });
     }
-
+//calculate the damage level for the risk level
     calculateDamageLevel = () => {
        
         let damageLevel = 0;

@@ -35,7 +35,7 @@ export async function login(userNumber, userPassword) {
   return await users.findOne({ number: parseInt(userNumber), password: userPassword });
 }
 
-
+//set beggining date
 export async function updateUserBeginningDate(userId) {
   const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
   const db = mongoClient.db("CyberDefence");
@@ -259,6 +259,7 @@ export async function getPerformedControls(systemId) {
   return await data.toArray();
 }
 
+//set performed control
 export async function savePerformedControl(userId, systemId, controlId, subclauseNmber) {
   const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
   const db = mongoClient.db("CyberDefence");
@@ -273,6 +274,7 @@ export async function savePerformedControl(userId, systemId, controlId, subclaus
   });
 }
 
+//delete perform control
 export async function deletePerformedControl(systemId, subclauseNmber) {
   const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
   const db = mongoClient.db("CyberDefence");
@@ -280,6 +282,7 @@ export async function deletePerformedControl(systemId, subclauseNmber) {
   return await controls.deleteOne({ systemId: systemId, subclauseNmber: subclauseNmber });
 }
 
+//change status of system to finish
 export async function setStatusToFinish(systemId) {
   const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
   const db = mongoClient.db("CyberDefence");
@@ -291,6 +294,8 @@ export async function setStatusToFinish(systemId) {
     $set: { status: status },
   })
 }
+
+//change status of system to perform controls
 export async function setStatusToControls(systemId) {
   const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
   const db = mongoClient.db("CyberDefence");
@@ -303,7 +308,7 @@ export async function setStatusToControls(systemId) {
   })
 }
 
-
+//get general data for dashboard
 export async function getDashboardData(userId) {
   const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
   const db = mongoClient.db("CyberDefence");
@@ -337,6 +342,7 @@ export async function getUpdateControls(systemId) {
   return await data.toArray();
 }
 
+//update control demand for some system
 export async function updateControl(userId, systemId, subclauseNmber, updateControl) {
   const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
   const db = mongoClient.db("CyberDefence");
@@ -363,6 +369,7 @@ export async function updateControl(userId, systemId, subclauseNmber, updateCont
   }
 }
 
+//get user details
 export async function getUserDetails(userId) {
   const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
   const db = mongoClient.db("CyberDefence");
@@ -371,6 +378,7 @@ export async function getUserDetails(userId) {
   return await users.findOne({ _id: userId });
 }
 
+//save user datails
 export async function saveUserData(userId, beginningDate, contactEmail,
   contactPerson, contactPhone) {
   const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
@@ -386,8 +394,22 @@ export async function saveUserData(userId, beginningDate, contactEmail,
       contactPhone: contactPhone
     },
   })
-
 }
+
+//update system's data
+export async function updateSystemData(systemId,name, materials,maxRisk) {
+  const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
+  const db = mongoClient.db("CyberDefence");
+  const systems = db.collection("Systems");
+  return await systems.updateOne({
+    _id: systemId,
+  }, {
+    $set: {name:name,
+       materials: materials,
+      maxRisk:maxRisk },
+  })
+}
+
 
 
 

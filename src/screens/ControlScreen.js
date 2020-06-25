@@ -37,6 +37,7 @@ class ControlScreen extends React.Component {
         this.loadUpdateControls();
     }
 
+    //load the relevent controls
     loadControls = () => {
         getControls(this.props.route.params.riskLevel).then(result => {
             if (!result) {
@@ -50,6 +51,7 @@ class ControlScreen extends React.Component {
         });
     }
 
+    //load the done controls 
     loadPerformedControls = () => {
         getPerformedControls(this.context.systemId).then(result => {
             if (!result) {
@@ -63,6 +65,7 @@ class ControlScreen extends React.Component {
         });
     }
 
+    //load the update demane for this system's controls
     loadUpdateControls = () => {
         getUpdateControls(this.context.systemId).then(result => {
             if (!result) {
@@ -76,6 +79,7 @@ class ControlScreen extends React.Component {
         });
     }
 
+    //save update demane
     saveUpdateControl = (subclauseNmber, updateControlText) => {
         updateControl(this.context.userId, this.context.systemId, subclauseNmber, updateControlText).then(result => {
         }).catch(error => {
@@ -83,6 +87,7 @@ class ControlScreen extends React.Component {
         });
     }
 
+    //move to next page
     onNextPageClick = () => {
         this.setState((prevState) => {
             return {
@@ -91,6 +96,7 @@ class ControlScreen extends React.Component {
         });
     }
 
+    //move to prev page
     onPrevPageClick = () => {
         this.setState((prevState) => {
             return {
@@ -99,6 +105,7 @@ class ControlScreen extends React.Component {
         });
     }
 
+    //show the modal with the data
     onShowMoreInfoClick = (selectedItem) => {
         this.setState({
             showMoreInfoModal: true,
@@ -108,25 +115,27 @@ class ControlScreen extends React.Component {
 
 
     }
-
+    //close the modal with the data
     onCloseMoreInfoClick = () => {
         this.setState({
             showMoreInfoModal: false
         });
     }
 
+    //mark done control 
     onShowControlProblemClick = () => {
         this.setState({
             problemInControl: true,
         });
     }
 
+    //open the problem modal
     onCloseControlProblemClick = () => {
         this.setState({
             problemInControl: false
         });
     }
-
+//close the problem modal
     onShowUpdateControlClick = (selectedItem) => {
         this.setState({
             showUpdateControl: true,
@@ -134,13 +143,13 @@ class ControlScreen extends React.Component {
         });
         this.getValue(selectedItem)
     }
-
+//open the update control's modal
     onCloseUpdateClick = () => {
         this.setState({
             showUpdateControl: false,
         });
     }
-
+//close modal and update control
     onCloseAndUpdateClick = () => {
         this.setState((prevState) => {
             const itemIndex = prevState.update.findIndex((pid) => pid.subclauseNmber == prevState.updateItem.subclauseNmber);
@@ -161,7 +170,7 @@ class ControlScreen extends React.Component {
             }
         })
     }
-
+//change the state of the control- don or not
     onControlItemClicked = (item) => {
         this.setState((prevState) => {
             const itemIndex = prevState.performed.findIndex((pid) => pid.subclauseNmber == item.subclauseNmber);
@@ -189,8 +198,8 @@ class ControlScreen extends React.Component {
                     subclauseNmber: item.subclauseNmber,
                 });
                 savePerformedControl(this.context.userId, this.context.systemId, item._id, item.subclauseNmber);
-              
-                this.state.performed.length+1 == this.state.controls.length && setStatusToFinish(this.context.systemId).then(result => {
+
+                this.state.performed.length + 1 == this.state.controls.length && setStatusToFinish(this.context.systemId).then(result => {
                     if (!result) {
                         return;
                     }
@@ -203,14 +212,14 @@ class ControlScreen extends React.Component {
             };
         });
     }
-
+//get index of the update data in the array
     getIndex = (item) => {
         if (!!item) {
             return this.state.update.findIndex((pid) => pid.subclauseNmber == item.subclauseNmber)
         }
         return -1
     }
-
+//get value of the update data in the array
     getValue = (item) => {
         let index = this.getIndex(item)
         let value = ""

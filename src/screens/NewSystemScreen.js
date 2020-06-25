@@ -23,7 +23,7 @@ class NewSystemScreen extends React.Component {
     componentDidMount() {
         this.loadMaxRisk();
     }
-
+//load the risk from the database
     loadMaxRisk = () => {
         getMaxRist().then(result => {
             if (!result) {
@@ -38,7 +38,7 @@ class NewSystemScreen extends React.Component {
             console.log('fail', error);
         });
     }
-
+//save the data
     saveMySystem = () => {
         if (this.state.systemName == '' || this.state.materialName == '' || this.state.maxRisk == '') {
             Alert.alert('', 'יש למלא את כל השדות לצורך הוספת המערכת', [{ text: 'אישור' }])
@@ -63,6 +63,7 @@ class NewSystemScreen extends React.Component {
             })
         }
     }
+    //change the state of the checkbox
     setToggleCheckBox = () => {
         this.setState((prevState) => {
             return {

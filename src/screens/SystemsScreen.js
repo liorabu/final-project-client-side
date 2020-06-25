@@ -36,7 +36,7 @@ class SystemsScreen extends React.Component {
     onScreenFocus = () => {
         this.loadMySystems();
     }
-
+//convert the status to number
     getSystemStatusLevel = (statusText) => {
         switch(statusText){
             case 'חישוב רמת סיכון': {
@@ -53,7 +53,7 @@ class SystemsScreen extends React.Component {
             }
         }
     }
-
+//load the systems and sort by status
     loadMySystems = () => {
         getSystems(this.context.userId).then(result => {
             if (!result) {
@@ -88,7 +88,7 @@ class SystemsScreen extends React.Component {
         });
 
     }
-
+//get the systems' data
     getSystemData = (system) => {
         this.context.setSystemId(system._id);
         this.context.setSystemName(system.name);
@@ -98,7 +98,7 @@ class SystemsScreen extends React.Component {
     DeleteAlert = (systemId) => {
         Alert.alert('', 'האם אתה בטוח שברצונך למחוק את המערכת?', [{ text: 'אישור', onPress: () => { this.delete(systemId) } }, { text: 'ביטול', onPress: () => console.log("save") }])
     }
-
+//delete system
     delete = (systemId) => {
         deleteSystem(systemId).then(result => {
             if (!result) {
@@ -119,7 +119,7 @@ class SystemsScreen extends React.Component {
         });
 
     }
-
+//get color by status
     backgroundBystage = (system) => {
         if (system.status == "חישוב רמת סיכון") {
             return "#F59997"
@@ -131,7 +131,7 @@ class SystemsScreen extends React.Component {
             return "#B2D5B7"
         }
     }
-
+//close the modal
     onCloseDescription = () => {
         this.setState({
             descriptionModal: false,
