@@ -88,7 +88,7 @@ class NewSystemScreen extends React.Component {
                     <TextInput
                         onChangeText={(text) => this.setState({ materialName: text })}
                         style={styles.textArea}
-                        placeholder="חומר כלשהו"
+                        placeholder="רשימת החומרים"
                         numberOfLines={10}
                         multiline={true}
                     />
