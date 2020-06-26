@@ -133,13 +133,11 @@ export async function saveExposureLevel(systemId, exposureLevel) {
   const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
   const db = mongoClient.db("CyberDefence");
   const systems = db.collection("Systems");
-  // console.log(systemId)
   await systems.updateOne({
     _id: systemId,
   }, {
     $set: { exposureLevel: exposureLevel },
   })
-
   return calculateRiskLevel(systemId);
 }
 
@@ -148,7 +146,6 @@ export async function saveDamageLevel(systemId, damageLevel) {
   const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
   const db = mongoClient.db("CyberDefence");
   const systems = db.collection("Systems");
-
   await systems.updateOne({
     _id: systemId,
   }, {
@@ -179,7 +176,7 @@ export async function calculateRiskLevel(systemId) {
   }
 
   let riskLevel = Math.round(system.exposureLevel + 3 * system.damageLevel);
-
+  // console.log(system.damageLevel + " " + system.exposureLevel)
   switch (true) {
     case riskLevel >= 4 && riskLevel <= 7:
       riskLevel = 1;
@@ -219,7 +216,12 @@ export async function deleteSystem(systemId) {
   const mongoClient = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
   const db = mongoClient.db("CyberDefence");
   const systems = db.collection("Systems");
-
+  const ExposureAnswers = db.collection("ExposureAnswers");
+  const DamageAnswers = db.collection("DamageAnswers");
+  const controls = db.collection("PerformedControls");
+  await ExposureAnswers.deleteMany({systemId:systemId});
+  await DamageAnswers.deleteMany({systemId:systemId});
+  await controls.deleteMany({systemId:systemId});
   return await systems.deleteOne({ _id: systemId });
 }
 

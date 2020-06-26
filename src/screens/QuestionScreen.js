@@ -108,7 +108,8 @@ class QuestionScreen extends React.Component {
             }
         });
 
-        if (this.state.answers.length == this.state.questions.length) {
+        // if (this.state.answers.length == this.state.questions.length) {
+            if(this.state.currentQuestion == this.state.questions.length || this.state.answers.length == this.state.questions.length){
             if (this.props.route.params.questionType == 'exposure') {
                 this.calculateExposureLevel();
             }
@@ -153,7 +154,6 @@ class QuestionScreen extends React.Component {
         }
 
         exposureLevel = exposureLevel / (answersNumbers.length + 1);
-
         saveExposureLevel(this.context.systemId, exposureLevel).then(result => {
             if (!result) {
                 Alert.alert('', 'לא בוצע חישוב רמת חשיפה', [{ text: 'אישור' }])
@@ -273,6 +273,8 @@ class QuestionScreen extends React.Component {
                                 <MainButton
                                     title="סיום"
                                     onPress={() => {
+                                        // this.saveAnswer(showQuestion.number, this.state.currentAnswer + 1);
+                                        // this.saveAnswerToMongoDb(showQuestion.number, this.state.currentAnswer + 1);
                                         this.saveAnswer(showQuestion.number, this.state.currentAnswer + 1);
                                         this.saveAnswerToMongoDb(showQuestion.number, this.state.currentAnswer + 1);
 
@@ -358,10 +360,11 @@ const styles = StyleSheet.create({
     },
 
     questionNumberText: {
-        width:'50%',
+        width:'55%',
         backgroundColor: '#f4f2f4',
         paddingHorizontal: '1%',
         alignSelf: 'center',
+        textAlign:'center',
         fontSize: 20,
         fontWeight: 'bold',
     },
@@ -383,7 +386,7 @@ const styles = StyleSheet.create({
     {
         color: '#169BD5',
         fontSize:18,
-        marginTop:'5%'
+        // marginTop:'1%'
     },
     outerStyle: {
         width: '100%',

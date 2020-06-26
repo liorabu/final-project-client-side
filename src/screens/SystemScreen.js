@@ -33,6 +33,7 @@ class SystemScreen extends React.Component {
     }
     onScreenFocus = () => {
         this.loadThisSystem();
+        console.log(this.state.system.riskLevel)
     }
 
     //load the optional risks 
