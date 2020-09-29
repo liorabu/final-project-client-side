@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, StyleSheet, View, Button, TouchableOpacity, TextInput, ScrollView, KeyboardAvoidingView, Platform, StatusBar } from 'react-native';
+import { Text, StyleSheet, View, Button, TouchableOpacity, TextInput, ScrollView, KeyboardAvoidingView, Platform, StatusBar ,Alert} from 'react-native';
 import { UserContext } from '../contexts/UserContext';
 import { getUserDetails, saveUserData } from '../utils/MongoDbUtils';
 import MainButton from '../components/MainButton';
@@ -51,9 +51,10 @@ class UserDetailsScreen extends React.Component {
     }
 //save / update the data
     saveMyData = () => {
-        if (this.state.beginningDate == '' || this.state.beginningDate == '' || this.state.contactEmail == '' ||
-            this.state.contactPerson == '' || this.state.contactPhone == '') {
-            Alert.alert('', 'יש למלא את כל הנתונים', [{ text: 'אישור' }])
+        if (this.state.beginningDate=='' || this.state.contactEmail==''|| this.state.contactPerson==''|| this.state.contactPhone==' ' ) {
+                console.log("y",this.state.contactPhone ,"g")
+            Alert.alert('', 'יש למלא את כל הנתונים', [{ text: 'אישור' }]);
+            return;
         }
         else {
             saveUserData(this.context.userId, this.state.beginningDate, this.state.contactEmail,
@@ -107,7 +108,7 @@ class UserDetailsScreen extends React.Component {
                     <View style={styles.dataGroup}>
                         <Text style={styles.title}>איש קשר</Text >
                         <TextInput style={styles.inputStyle}
-                            onChangeText={(text) => this.setState({ contactPerson: text })}
+                            onChangeText={(text) => this.setState({ contactPerson:text})}
                             returnKeyType='go'
                             autoCapitalize="none"
                             autoCorrect={false}
@@ -118,7 +119,7 @@ class UserDetailsScreen extends React.Component {
                     <View style={styles.dataGroup}>
                         <Text style={styles.title}>טלפון ליצירת קשר</Text >
                         <TextInput style={styles.inputStyle}
-                            onChangeText={(text) => this.setState({ contactPhone: text })}
+                            onChangeText={(text) => this.setState({ contactPhone:text})}
                             returnKeyType='go'
                             autoCapitalize="none"
                             autoCorrect={false}

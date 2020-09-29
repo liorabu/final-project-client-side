@@ -59,10 +59,19 @@ class NewSystemScreen extends React.Component {
                     console.log('invalid usernumber / password');
                     return;
                 }
-                this.props.navigation.navigate('Systems');
+                this.showSystemData(result.insertedId);
             })
         }
     }
+
+    //get the systems' data
+    showSystemData = (systemId) => {
+        this.context.setSystemId(systemId);
+        this.context.setSystemName( this.state.systemName);
+        this.props.navigation.navigate('System')
+    }
+
+
     //change the state of the checkbox
     setToggleCheckBox = () => {
         this.setState((prevState) => {
